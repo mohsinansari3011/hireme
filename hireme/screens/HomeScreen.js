@@ -10,11 +10,12 @@ import {
 } from 'react-native';
 
 //import FBSDK, { LoginButton, AccessToken } from 'react-native-fbsdk';
+import { LoginManager } from "react-native-fbsdk";
 
-const FBSDK = require('react-native-fbsdk');
-const {
-  LoginManager,
-} = FBSDK;
+// const FBSDK = require('react-native-fbsdk');
+// const {
+//   LoginManager,
+// } = FBSDK;
 
 
 export default class HomeScreen extends React.Component {
@@ -24,21 +25,26 @@ export default class HomeScreen extends React.Component {
 
   _handleLogin(){
 
-    LoginManager.logInWithReadPermissions(["public_profile"]).then(
-      function (result) {
-        if (result.isCancelled) {
-          console.log("Login cancelled");
-        } else {
-          console.log(
-            "Login success with permissions: " +
-            result.grantedPermissions.toString()
-          );
+    try {
+      LoginManager.logInWithReadPermissions(["public_profile"]).then(
+        function (result) {
+          if (result.isCancelled) {
+            console.log("Login cancelled");
+          } else {
+            console.log(
+              "Login success with permissions: " +
+              result.grantedPermissions.toString()
+            );
+          }
+        },
+        function (error) {
+          console.log("Login fail with error: " + error);
         }
-      },
-      function (error) {
-        console.log("Login fail with error: " + error);
-      }
-    );
+      );
+    } catch (error) {
+      console.log("Catch : " + error);
+    }
+    
   }
 
 
