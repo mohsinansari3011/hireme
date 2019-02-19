@@ -8,23 +8,50 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-//import { WebBrowser } from 'expo';
-//import { MonoText } from '../components/StyledText';
 
-import FBLoginButton from '../FBLoginButton'
+//import FBSDK, { LoginButton, AccessToken } from 'react-native-fbsdk';
+
+const FBSDK = require('react-native-fbsdk');
+const {
+  LoginManager,
+} = FBSDK;
+
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
+  _handleLogin(){
+
+    LoginManager.logInWithReadPermissions(["public_profile"]).then(
+      function (result) {
+        if (result.isCancelled) {
+          console.log("Login cancelled");
+        } else {
+          console.log(
+            "Login success with permissions: " +
+            result.grantedPermissions.toString()
+          );
+        }
+      },
+      function (error) {
+        console.log("Login fail with error: " + error);
+      }
+    );
+  }
 
 
   renderButton = () =>{
       return (
         <View style={styles.container}>
           <Text style={styles.label}>Welcome to the Facebook SDK for React Native!</Text>
-          {/* <FBLoginButton /> */}
+          <TouchableOpacity onPress={()=>this._handleLogin()}>
+        <Text>
+          Login With Facebook
+        </Text>
+
+          </TouchableOpacity>
         </View>
       );
   }
@@ -44,7 +71,7 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <Text style={styles.label}>Belcome to the Facebook SDK for React Native!</Text>
-          {renderButton()}
+          {this.renderButton()}
          
         </ScrollView>
 
@@ -61,9 +88,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    
+   
     backgroundColor: '#F5FCFF',
+  }, label: {
+    fontSize: 16,
+    fontWeight: 'normal',
+    marginBottom: 48,
   },
   developmentModeText: {
     marginBottom: 20,
