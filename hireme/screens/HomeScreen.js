@@ -31,6 +31,7 @@ export default class HomeScreen extends React.Component {
     if (type === 'success') {
       // Get the user's name using Facebook's Graph API
       const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+      console.log(response.json());
       alert(`Logged in! Hi ${(await response.json()).name}!`);
     } else {
       // type === 'cancel'
@@ -44,12 +45,14 @@ export default class HomeScreen extends React.Component {
   renderButton = () =>{
       return (
         <View style={styles.container}>
-          <Text style={styles.label}>Welcome to the Facebook SDK for React Native!</Text>
+          <Text style={styles.label}>Welcome to the HireMe Application!!</Text>
           <TouchableOpacity onPress={()=>this._handleLogin()}>
-        <Text>
-          Login With Facebook
-        </Text>
-
+            <Button
+              // onPress={onPressLearnMore}
+              title="Login With Facebook"
+              color="#841584"
+              accessibilityLabel="Learn more about this purple button"
+            />
           </TouchableOpacity>
         </View>
       );
@@ -61,15 +64,12 @@ export default class HomeScreen extends React.Component {
           <View style={styles.welcomeContainer}>
             <Image
               source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
+                require('../assets/images/hireme.png')
               }
               style={styles.welcomeImage}
             />
           </View>
 
-          <Text style={styles.label}>Belcome to the Facebook SDK for React Native!</Text>
           {this.renderButton()}
          
         </ScrollView>
