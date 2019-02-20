@@ -9,9 +9,8 @@ import {
   View,
 } from 'react-native';
 
-import { LoginManager } from "react-native-fbsdk";
 
-
+//import { LoginManager } from "react-native-fbsdk";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -32,7 +31,7 @@ export default class HomeScreen extends React.Component {
     if (type === 'success') {
       // Get the user's name using Facebook's Graph API
       const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-      alert('Logged in!', `Hi ${(await response.json()).name}!`);
+      alert(`Logged in! Hi ${(await response.json()).name}!`);
     } else {
       // type === 'cancel'
     }
