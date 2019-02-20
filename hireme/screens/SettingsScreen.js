@@ -6,6 +6,10 @@ export default class SettingsScreen extends React.Component {
     title: 'app.json',
   };
 
+
+  alert("Hello! I am an alert box!!");
+
+
   render() {
     return <ExpoConfigView />;
   }
