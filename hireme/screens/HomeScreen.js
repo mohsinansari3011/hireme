@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View, Button,
 } from 'react-native';
 
 
@@ -26,13 +26,22 @@ export default class HomeScreen extends React.Component {
       permissions,
       declinedPermissions,
     } = await Expo.Facebook.logInWithReadPermissionsAsync('2751151995110691', {
-      permissions: ['public_profile'],
+      permissions: ['public_profile', 'email'],
     });
     if (type === 'success') {
       // Get the user's name using Facebook's Graph API
-      const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-      console.log(response.json());
-      alert(`Logged in! Hi ${(await response.json()).name}!`);
+      const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=email,id,name,picture.type(large),gender,friends`);
+      const profile = await response.json();
+      //const credential = firebase.auth.FacebookAuthProvider.credential(token);
+      // firebase.auth().signInWithCredential(credential).then((result) =>{
+      // }).catch((error) => {
+      //   console.log(error);
+      // })
+
+
+      
+      //console.log(response.json());
+      alert(`Logged in! Hi ${profile.name} , ${profile.email}!`);
     } else {
       // type === 'cancel'
     }
@@ -46,13 +55,20 @@ export default class HomeScreen extends React.Component {
       return (
         <View style={styles.container}>
           <Text style={styles.label}>Welcome to the HireMe Application!!</Text>
-          <TouchableOpacity onPress={()=>this._handleLogin()}>
-            <Button
-              // onPress={onPressLearnMore}
+          <TouchableOpacity onPress={() => this._handleLogin()}> 
+
+            <Image 
+              source={
+                require('../assets/images/loginfacebook.png')
+              }
+              style={styles.FbImage}
+            />
+            {/* <Button
+              onPress={() => this._handleLogin()}
               title="Login With Facebook"
               color="#841584"
               accessibilityLabel="Learn more about this purple button"
-            />
+            /> */}
           </TouchableOpacity>
         </View>
       );
@@ -115,6 +131,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   welcomeImage: {
+    width: 100,
+    height: 80,
+    resizeMode: 'contain',
+    marginTop: 3,
+    marginLeft: -10,
+  }, FbImage: {
+    flex: 1,
     width: 100,
     height: 80,
     resizeMode: 'contain',
