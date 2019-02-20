@@ -7,7 +7,6 @@ export default class SettingsScreen extends React.Component {
   };
 
 
-  alert("Hello! I am an alert box!!");
 
 
   render() {
