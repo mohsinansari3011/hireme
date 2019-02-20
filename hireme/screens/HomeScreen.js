@@ -12,10 +12,6 @@ import {
 //import FBSDK, { LoginButton, AccessToken } from 'react-native-fbsdk';
 import { LoginManager } from "react-native-fbsdk";
 
-// const FBSDK = require('react-native-fbsdk');
-// const {
-//   LoginManager,
-// } = FBSDK;
 
 
 export default class HomeScreen extends React.Component {
