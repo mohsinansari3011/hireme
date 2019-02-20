@@ -18,29 +18,28 @@ export default class HomeScreen extends React.Component {
     header: null,
   };
 
-  _handleLogin(){
-
-    try {
-      LoginManager.logInWithReadPermissions(["public_profile"]).then(
-        function (result) {
-          if (result.isCancelled) {
-            console.log("Login cancelled");
-          } else {
-            console.log(
-              "Login success with permissions: " +
-              result.grantedPermissions.toString()
-            );
-          }
-        },
-        function (error) {
-          console.log("Login fail with error: " + error);
-        }
-      );
-    } catch (error) {
-      console.log("Catch : " + error);
+  async _handleLogin() {
+  try {
+    const {
+      type,
+      token,
+      expires,
+      permissions,
+      declinedPermissions,
+    } = await Expo.Facebook.logInWithReadPermissionsAsync('2751151995110691', {
+      permissions: ['public_profile'],
+    });
+    if (type === 'success') {
+      // Get the user's name using Facebook's Graph API
+      const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+      Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+    } else {
+      // type === 'cancel'
     }
-    
+  } catch ({ message }) {
+    alert(`Facebook Login Error: ${message}`);
   }
+}
 
 
   renderButton = () =>{

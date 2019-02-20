@@ -24,7 +24,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "hireme.com"
+      "bundleIdentifier": "hireme.com.hire"
     },
     "android": {
       "package": "hireme.com.hiremeapp",
