@@ -9,7 +9,6 @@ import {
   View,
 } from 'react-native';
 
-//import FBSDK, { LoginButton, AccessToken } from 'react-native-fbsdk';
 import { LoginManager } from "react-native-fbsdk";
 
 
