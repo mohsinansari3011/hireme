@@ -69,8 +69,12 @@ export default class HomeScreen extends React.Component {
         .then((snapshot) => {
 
           let userId = null;
+
+
+          userId = childsnapshot.val().id;
+          
           snapshot.forEach(childsnapshot => {
-            userId = childsnapshot.val().id;
+           
           })
 
           //console.log(this.state.formdata.category.value);
