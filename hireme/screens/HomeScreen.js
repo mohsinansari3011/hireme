@@ -29,7 +29,6 @@ export default class HomeScreen extends React.Component {
       permissions: ['public_profile', 'email'],
     });
     if (type === 'success') {
-      // Get the user's name using Facebook's Graph API
       const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=email,id,name,picture.type(large),gender,friends`);
       const profile = await response.json();
       //const credential = firebase.auth.FacebookAuthProvider.credential(token);
