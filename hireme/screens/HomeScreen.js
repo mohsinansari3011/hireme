@@ -12,8 +12,6 @@ import {
 import { firebase, firedb } from '../config/firebase';
 const firebase_users = firedb.ref('users');
 
-//import { LoginManager } from "react-native-fbsdk";
-
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
