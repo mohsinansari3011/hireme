@@ -63,12 +63,6 @@ export default class LoginScreen extends React.Component {
                         }
                         style={styles.FbImage}
                     />
-                    {/* <Button
-              onPress={() => this._handleLogin()}
-              title="Login With Facebook"
-              color="#841584"
-              accessibilityLabel="Learn more about this purple button"
-            /> */}
                 </TouchableOpacity>
             </View>
         );
