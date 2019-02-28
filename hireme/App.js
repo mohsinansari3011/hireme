@@ -8,8 +8,16 @@ import Login from './screens/LoginScreen';
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
-    isLogged :false
+    isLogged :false,
   };
+
+
+  isloggedfunc = (action) => {
+
+    this.setState({
+      isLogged: action
+    })
+  }
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -25,7 +33,7 @@ export default class App extends React.Component {
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
 
-          {isLogged ? <AppNavigator /> : <Login />}
+          {this.state.isLogged ? <AppNavigator /> : <Login isloggedFunc={this.isloggedfunc} />}
           
 
         

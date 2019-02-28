@@ -36,7 +36,7 @@ export default class LoginScreen extends React.Component {
                 // })
 
 
-
+                this.props.isloggedFunc(true);
                 //console.log(response.json());
                 alert(`Logged in! Hi ${profile.name} , ${profile.email}!`);
 

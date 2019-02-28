@@ -17,40 +17,7 @@ export default class HomeScreen extends React.Component {
     header: null,
   };
 
-  async _handleLogin() {
-  try {
-    const {
-      type,
-      token,
-      expires,
-      permissions,
-      declinedPermissions,
-    } = await Expo.Facebook.logInWithReadPermissionsAsync('2751151995110691', {
-      permissions: ['public_profile', 'email'],
-    });
-    if (type === 'success') {
-      const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=email,id,name,picture.type(large),gender,friends`);
-      const profile = await response.json();
-      //const credential = firebase.auth.FacebookAuthProvider.credential(token);
-      // firebase.auth().signInWithCredential(credential).then((result) =>{
-      // }).catch((error) => {
-      //   console.log(error);
-      // })
-
-
-      
-      //console.log(response.json());
-      alert(`Logged in! Hi ${profile.name} , ${profile.email}!`);
-
-      this.SubmitDataToFirebase(profile);
-
-    } else {
-      // type === 'cancel'
-    }
-  } catch ({ message }) {
-    alert(`Facebook Login Error: ${message}`);
-  }
-}
+  
 
 
   SubmitDataToFirebase = (dataToSubmit) =>{
@@ -113,21 +80,11 @@ export default class HomeScreen extends React.Component {
   renderButton = () =>{
       return (
         <View style={styles.container}>
-          <Text style={styles.label}>Welcome to the HireMe Application!!</Text>
-          <TouchableOpacity onPress={() => this._handleLogin()}> 
+          <Text style={styles.label}>Welcome to the UserList!!</Text>
+          <TouchableOpacity> 
 
-            <Image 
-              source={
-                require('../assets/images/loginfacebook.png')
-              }
-              style={styles.FbImage}
-            />
-            {/* <Button
-              onPress={() => this._handleLogin()}
-              title="Login With Facebook"
-              color="#841584"
-              accessibilityLabel="Learn more about this purple button"
-            /> */}
+           
+            
           </TouchableOpacity>
         </View>
       );
