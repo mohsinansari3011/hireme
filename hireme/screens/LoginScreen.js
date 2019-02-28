@@ -50,8 +50,7 @@ export default class LoginScreen extends React.Component {
         }
     }
 
-
-    render() {
+    renderButton = () => {
         return (
             <View style={styles.container}>
                 <Text style={styles.label}>Welcome to the HireMe Application!!</Text>
@@ -64,6 +63,28 @@ export default class LoginScreen extends React.Component {
                         style={styles.FbImage}
                     />
                 </TouchableOpacity>
+            </View>
+        );
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+                    <View style={styles.welcomeContainer}>
+                        <Image
+                            source={
+                                require('../assets/images/hireme.png')
+                            }
+                            style={styles.welcomeImage}
+                        />
+                    </View>
+
+                    {this.renderButton()}
+
+                </ScrollView>
+
+
             </View>
         );
     }
