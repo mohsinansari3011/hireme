@@ -9,19 +9,23 @@ export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
     isLogged :false,
+    user:null,
   };
 
 
 
-  chekAuth = () =>{
+
+  componentWillMount(){
+  
     firebase.auth().onAuthStateChanged((user) => {
-      alert(user)
       if (user != null) {
         this.setState({
-          isLogged: true
+          isLogged: true,
+          user
         })
       }
     })
+  
   }
 
 
@@ -46,8 +50,8 @@ export default class App extends React.Component {
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
 
-          {this.chekAuth()}
-          {this.state.isLogged ? <AppNavigator /> : <Login isloggedFunc={this.isloggedfunc} />}
+         
+          {this.state.isLogged ? <AppNavigator user={this.state.user} /> : <Login isloggedFunc={this.isloggedfunc} />}
           
 
         
