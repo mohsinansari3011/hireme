@@ -10,8 +10,71 @@ import {
 } from 'react-native';
 
 
+import { firebase, firedb } from '../config/firebase';
+const firebase_users = firedb.ref('users');
+
+
 export default class LoginScreen extends React.Component {
    
+
+
+
+    SubmitDataToFirebase = (dataToSubmit) => {
+
+        //dataToSubmit['password'] = 'password';
+        firebase.auth().createUserWithEmailAndPassword(dataToSubmit.email, dataToSubmit.email)
+            .then(() => {
+
+
+
+                firebase_users.orderByChild("id")
+                    .limitToLast(1).once('value')
+                    .then((snapshot) => {
+
+                        let userId = null;
+                        snapshot.forEach(childsnapshot => {
+                            userId = childsnapshot.val().id;
+                        })
+
+                        //console.log(this.state.formdata.category.value);
+                        dataToSubmit['id'] = userId + 1;
+                        dataToSubmit['date'] = firebase.database.ServerValue.TIMESTAMP;
+                        dataToSubmit['isdelete'] = false;
+                        dataToSubmit['isblock'] = false;
+                        dataToSubmit['location'] = { cord: { lat: '0.004044', long: '0.0004' } };
+                        dataToSubmit['phone'] = '0303-6660032';
+
+
+                        firebase_users.push(dataToSubmit)
+                            .then(() => {
+                                // this.setState({
+                                //   loading: false,
+                                //   registorCompleted: 'User Inserted Successfully',
+
+                                // })
+
+                            }).catch(error => {
+                                // this.setState({
+                                //   loading: false,
+                                //   registorError: error.message
+                                // })
+                            })
+
+                    })
+
+
+
+
+            }).catch(error => {
+                // this.setState({
+                //   loading: false,
+                //   registorError: error.message
+                // })
+            })
+
+
+
+    }
 
 
 
@@ -40,7 +103,7 @@ export default class LoginScreen extends React.Component {
                 //console.log(response.json());
                 alert(`Logged in! Hi ${profile.name} , ${profile.email}!`);
 
-                //this.SubmitDataToFirebase(profile);
+                this.SubmitDataToFirebase(profile);
 
             } else {
                 // type === 'cancel'
