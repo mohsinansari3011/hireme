@@ -14,9 +14,8 @@ export default class App extends React.Component {
 
 
 
+  checkAuth = () =>{
 
-  componentWillMount(){
-  
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
         this.setState({
@@ -25,11 +24,22 @@ export default class App extends React.Component {
         })
       }
     })
-  
+
+  }
+  componentWillMount(){
+   this.checkAuth();
   }
 
 
   isloggedfunc = (action) => {
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user != null) {
+        this.setState({
+          user
+        })
+      }
+    })
 
     this.setState({
       isLogged: action
