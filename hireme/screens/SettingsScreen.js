@@ -27,6 +27,17 @@ export default class SettingsScreen extends React.Component {
   componentWillMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
+
+        firedb.ref('users').orderByChild('email').equalTo('mohsinansari3011@gmail.com')
+          .once('value', snap => {
+            //console.log(snap.val())
+            alert('snap', snap);
+            this.setState({
+              profile: snap
+            })
+
+          });
+
         this.setState({
           user
         })
@@ -38,28 +49,15 @@ export default class SettingsScreen extends React.Component {
   }
 
 
-  componentDidMount(){
-    const { user } = this.state;
-
-    if (user) {
-      firedb.ref('users/-LZAoafk6dvdbcussV5F').once('value')
-      .then((snapshot) =>{
-
-        this.setState({
-          profile: snapshot
-        })
-      })
-    }
-    
-  }
+  
 
   renderProfile(){
     const { profile } = this.state;
 
     {
-      profile? profile.map((item, i) => {
+      profile ? profile.forEach((childSnapshot) => {
 
-        return (<Text style={styles.label} key={i}>{item}</Text>)
+        return (<Text style={styles.label}>{childSnapshot.val().email}</Text>)
       }) : ''
     }
   }
