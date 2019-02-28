@@ -23,6 +23,7 @@ export default class HomeScreen extends React.Component {
       return (
         <View style={styles.container}>
           <Text style={styles.label}>Welcome to the UserList!!</Text>
+          <Text style={styles.label}>{this.props.user}</Text>
           <TouchableOpacity> 
 
            
