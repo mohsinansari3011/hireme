@@ -10,28 +10,33 @@ import {
 } from 'react-native';
 
 
+import { firebase } from '../config/firebase';
+
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
 
   
+  static navigationOptions = {
+    header: null,
+    title: 'User List',
+  };
+
+  state = {
+    user: null,
+  };
 
 
-
-  renderButton = () =>{
-      return (
-        <View style={styles.container}>
-          <Text style={styles.label}>Welcome to the UserList!!</Text>
-          <Text style={styles.label}>{this.props.user}</Text>
-          <TouchableOpacity> 
-
-           
-            
-          </TouchableOpacity>
-        </View>
-      );
+  componentWillMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user != null) {
+        this.setState({
+          user
+        })
+      }
+    })
   }
+
+
+  
   render() {
     return (
       <View style={styles.container}>
@@ -45,7 +50,7 @@ export default class HomeScreen extends React.Component {
             />
           </View>
 
-          {this.renderButton()}
+       
          
         </ScrollView>
 

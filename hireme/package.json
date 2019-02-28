@@ -13,6 +13,7 @@
   "dependencies": {
     "@expo/samples": "2.1.1",
     "expo": "^32.0.0",
+    "expo-cli": "^2.11.3",
     "expokit": "^32.0.6",
     "firebase": "^5.8.3",
     "react": "16.5.0",
