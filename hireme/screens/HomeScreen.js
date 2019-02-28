@@ -16,7 +16,6 @@ export default class HomeScreen extends React.Component {
 
   
   static navigationOptions = {
-    header: null,
     title: 'User List',
   };
 
@@ -36,7 +35,7 @@ export default class HomeScreen extends React.Component {
   }
 
 
-  
+
   render() {
     return (
       <View style={styles.container}>
