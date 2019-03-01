@@ -53,6 +53,8 @@ export default class LoginScreen extends React.Component {
 
                                 // })
 
+                                this.props.isloggedFunc(true);
+
                             }).catch(error => {
                                 // this.setState({
                                 //   loading: false,
@@ -70,7 +72,7 @@ export default class LoginScreen extends React.Component {
                 //alert(error);
                 firebase.auth().signInWithEmailAndPassword(dataToSubmit.email, dataToSubmit.email)
                     .then(() => {
-
+                        this.props.isloggedFunc(true);
                     })
                     .catch(error => {
                         //alert(error);
@@ -113,7 +115,7 @@ export default class LoginScreen extends React.Component {
 
                 //alert(`Logged in! Hi ${profile.name} , ${profile.email}!`);
                 this.SubmitDataToFirebase(profile);
-                this.props.isloggedFunc(true);
+                
             } else {
                 // type === 'cancel'
             }

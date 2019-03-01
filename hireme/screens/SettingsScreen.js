@@ -24,7 +24,7 @@ export default class SettingsScreen extends React.Component {
       user: null,
       profile: null,
       number: null,
-      image: { uri : null }
+      image: null
 
     };
 
@@ -36,6 +36,7 @@ export default class SettingsScreen extends React.Component {
   componentWillMount() {
 
     let number = null;
+    let image = null;
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
 
@@ -47,7 +48,7 @@ export default class SettingsScreen extends React.Component {
               this.setState({
                 profile: childSnapshot.val(),
                 number: childSnapshot.val().phone,
-                image: { uri: childSnapshot.val().picture.data.url} 
+                image: childSnapshot.val().picture.data.url
               })
               //alert(childSnapshot.val().email);
             });
@@ -59,7 +60,8 @@ export default class SettingsScreen extends React.Component {
 
         this.setState({
           user,
-          number
+          number,
+          image
         })
       }
     })
@@ -71,14 +73,40 @@ export default class SettingsScreen extends React.Component {
 
   
   handleChoosePhoto = () => {
-    const options = {
-      noData: true,
+    try {
+
+      const options = {
+        title: 'Select Avatar',
+        customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+      };
+      ImagePicker.showImagePicker(options, (response) => {
+        console.log('Response = ', response);
+
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+        } else {
+          const source = { uri: response.uri };
+
+          // You can also display the image using data:
+          // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+          this.setState({
+            image: source,
+          });
+        }
+      });
+
+    } catch (error) {
+      alert(error)
     }
-    ImagePicker.launchImageLibrary(options, response => {
-      if (response.uri) {
-        this.setState({ image : response })
-      }
-    })
   }
 
 
@@ -98,7 +126,7 @@ export default class SettingsScreen extends React.Component {
             onChangeText={(text) => this.setState({ number:text })}
             value={number}
         />
-          <Image source={{ uri: image.uri }}
+          <Image source={{ uri: image }}
             style={{ width: 400, height: 400 }} />
 
        </View> : <Text> Loading... </Text>
@@ -122,21 +150,6 @@ export default class SettingsScreen extends React.Component {
   }
 
 
-  _showNumber(){
-
-    try {
-      const { number } = this.state;
-
-      alert(number);
-      // signed out
-    } catch (e) {
-      alert(e);
-      // an error
-    } 
-
-   
-
-  }
 
 
 
