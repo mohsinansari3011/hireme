@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View, Button,
+  View, Button, TextInput,
 } from 'react-native';
 
 
@@ -31,10 +31,16 @@ export default class SettingsScreen extends React.Component {
         firedb.ref('users').orderByChild('email').equalTo('mohsinansari3011@gmail.com')
           .once('value', snap => {
             //console.log(snap.val())
-            alert('snap', snap);
-            this.setState({
-              profile: snap
-            })
+           
+            snap.forEach((childSnapshot) => {
+              this.setState({
+                profile: childSnapshot.val()
+              })
+              //alert(childSnapshot.val().email);
+            });
+
+
+            
 
           });
 
@@ -53,13 +59,34 @@ export default class SettingsScreen extends React.Component {
 
   renderProfile(){
     const { profile } = this.state;
+   
+    
+    
+    return (
+      profile ? <TouchableOpacity>
+        <View><Text> Welcome Home </Text> </View>
+        {/* <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+          // onChangeText={(text) => this.setState({ text })}
+          // value={profile.email}
+        /> */}
+        {/* <Text>Name : </Text>
+        <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+          // onChangeText={(text) => this.setState({ text })}
+          value={profile.name}
+        />
+        <Text>Phone : </Text>
+        <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+          // onChangeText={(text) => this.setState({ text })}
+          value={profile.phone}
+        /> */}
 
-    {
-      profile ? profile.forEach((childSnapshot) => {
-
-        return (<Text style={styles.label}>{childSnapshot.val().email}</Text>)
-      }) : ''
-    }
+        {/* <Text> Image {profile.picture.data.url} </Text> */}
+      </TouchableOpacity> : ''
+      
+    )
   }
 
   renderButton = () => {
@@ -67,11 +94,7 @@ export default class SettingsScreen extends React.Component {
     //alert(this.state.user); 
     return (
       <View style={styles.container}>
-
-
         <Text style={styles.label}>Welcome to the Profile Update!!</Text>
-        <Text style={styles.label}>{user ? user.email : ''}</Text>
-        
         {this.renderProfile()}
 
       </View>
