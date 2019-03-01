@@ -64,27 +64,27 @@ export default class SettingsScreen extends React.Component {
     
     return (
       profile ?
-        <View><Text> Welcome Home </Text>
-        {/* <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-          // onChangeText={(text) => this.setState({ text })}
-          // value={profile.email}
-        /> */}
-        {/* <Text>Name : </Text>
+        <View><Text> Email : </Text>
         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+          style={{ height: 40, borderColor: 'white', borderWidth: 1 }}
+          // onChangeText={(text) => this.setState({ text })}
+          value={profile.email}
+        />
+        <Text>Name : </Text>
+        <TextInput
+            style={{ height: 40, borderColor: 'white', borderWidth: 1 }}
           // onChangeText={(text) => this.setState({ text })}
           value={profile.name}
         />
         <Text>Phone : </Text>
         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+            style={{ height: 40, borderColor: 'white', borderWidth: 1 }}
           // onChangeText={(text) => this.setState({ text })}
           value={profile.phone}
-        /> */}
+        />
 
-        {/* <Text> Image {profile.picture.data.url} </Text> */}
-       </View> : <Text> Welcome Home2 </Text>
+        <Text> Image {profile.picture.data.url} </Text>
+       </View> : <Text> Not Found... </Text>
       
     )
   }
