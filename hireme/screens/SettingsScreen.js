@@ -21,6 +21,8 @@ export default class SettingsScreen extends React.Component {
   state = {
     user: null,
     profile : null,
+    number : null,
+    image : null
   };
 
 
@@ -28,7 +30,7 @@ export default class SettingsScreen extends React.Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
 
-        firedb.ref('users').orderByChild('email').equalTo('mohsinansari3011@gmail.com')
+        firedb.ref('users').orderByChild('email').equalTo(user.email)
           .once('value', snap => {
             //console.log(snap.val())
            
@@ -64,38 +66,69 @@ export default class SettingsScreen extends React.Component {
     
     return (
       profile ?
-        <View><Text> Email : </Text>
-        <TextInput
-          style={{ height: 40, borderColor: 'white', borderWidth: 1 }}
-          // onChangeText={(text) => this.setState({ text })}
-          value={profile.email}
-        />
-        <Text>Name : </Text>
-        <TextInput
-            style={{ height: 40, borderColor: 'white', borderWidth: 1 }}
-          // onChangeText={(text) => this.setState({ text })}
-          value={profile.name}
-        />
+        <View><Text> WellCome {profile.name} </Text>
+          <Text>Email : {profile.email}</Text>
         <Text>Phone : </Text>
         <TextInput
-            style={{ height: 40, borderColor: 'white', borderWidth: 1 }}
-          // onChangeText={(text) => this.setState({ text })}
+            style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+            onChangeText={(text) => this.setState({ number:text })}
           value={profile.phone}
         />
+          <Image source={{ uri: profile.picture.data.url }}
+            style={{ width: 400, height: 400 }} />
 
-        <Text> Image {profile.picture.data.url} </Text>
-       </View> : <Text> Not Found... </Text>
+       </View> : <Text> Loading... </Text>
       
     )
   }
+
+
+  async _LogoutHireMe() {
+
+    try {
+      await firebase.auth().signOut();
+      alert('You have Logout Successfully');
+      // signed out
+    } catch (e) {
+      // an error
+    } 
+
+
+  }
+
+
+  _showNumber(){
+
+    const { number } = this.state;
+
+    alert(number);
+
+  }
+
+
 
   renderButton = () => {
     const { user } = this.state;
     //alert(this.state.user); 
     return (
       <View style={styles.container}>
-        <Text style={styles.label}>Welcome to the Profile Update!!</Text>
+        <Text style={styles.label}>Update Your Profile!!</Text>
         <TouchableOpacity>{this.renderProfile()}</TouchableOpacity>
+
+        <Button
+          onPress={this._showNumber}
+          title="ShowData"
+          color="#841584"
+          accessibilityLabel="Logout From Facebook"
+        />
+
+        <Button
+          onPress={this._LogoutHireMe}
+          title="Logout"
+          color="#841584"
+          accessibilityLabel="Logout From Facebook"
+        />
+
 
       </View>
     );
