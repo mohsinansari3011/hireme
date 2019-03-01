@@ -113,6 +113,8 @@ export default class SettingsScreen extends React.Component {
           <Text>Email : {profile.email}</Text>
         <Text>Phone : </Text>
         <TextInput
+            keyboardType='numeric'
+            maxLength={10}
             style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
             onChangeText={(text) => this.setState({ number:text })}
             value={number}
