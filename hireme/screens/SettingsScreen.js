@@ -63,8 +63,8 @@ export default class SettingsScreen extends React.Component {
     
     
     return (
-      profile ? <TouchableOpacity>
-        <View><Text> Welcome Home </Text> </View>
+      profile ?
+        <View><Text> Welcome Home </Text>
         {/* <TextInput
           style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
           // onChangeText={(text) => this.setState({ text })}
@@ -84,7 +84,7 @@ export default class SettingsScreen extends React.Component {
         /> */}
 
         {/* <Text> Image {profile.picture.data.url} </Text> */}
-      </TouchableOpacity> : ''
+       </View> : <Text> Welcome Home2 </Text>
       
     )
   }
@@ -95,7 +95,7 @@ export default class SettingsScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.label}>Welcome to the Profile Update!!</Text>
-        {this.renderProfile()}
+        <TouchableOpacity>{this.renderProfile()}</TouchableOpacity>
 
       </View>
     );
