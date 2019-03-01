@@ -27,6 +27,8 @@ export default class SettingsScreen extends React.Component {
 
 
   componentWillMount() {
+
+    let number = null;
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
 
@@ -36,7 +38,8 @@ export default class SettingsScreen extends React.Component {
            
             snap.forEach((childSnapshot) => {
               this.setState({
-                profile: childSnapshot.val()
+                profile: childSnapshot.val(),
+                number: childSnapshot.val().phone,
               })
               //alert(childSnapshot.val().email);
             });
@@ -47,7 +50,8 @@ export default class SettingsScreen extends React.Component {
           });
 
         this.setState({
-          user
+          user,
+          number
         })
       }
     })
@@ -60,7 +64,7 @@ export default class SettingsScreen extends React.Component {
   
 
   renderProfile(){
-    const { profile } = this.state;
+    const { profile, number } = this.state;
    
     
     
@@ -72,7 +76,7 @@ export default class SettingsScreen extends React.Component {
         <TextInput
             style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
             onChangeText={(text) => this.setState({ number:text })}
-          value={profile.phone}
+            value={number}
         />
           <Image source={{ uri: profile.picture.data.url }}
             style={{ width: 400, height: 400 }} />
@@ -99,9 +103,17 @@ export default class SettingsScreen extends React.Component {
 
   _showNumber(){
 
-    const { number } = this.state;
+    try {
+      const { number } = this.state;
 
-    alert(number);
+      alert(number);
+      // signed out
+    } catch (e) {
+      alert(e);
+      // an error
+    } 
+
+   
 
   }
 
