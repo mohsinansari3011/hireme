@@ -11,19 +11,26 @@ import {
 
 
 import { firebase, firedb } from '../config/firebase';
-
+import ImagePicker from 'react-native-image-picker'
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'Profile',
   };
 
-  state = {
-    user: null,
-    profile : null,
-    number : null,
-    image : null
-  };
+
+
+    state = {
+      user: null,
+      profile: null,
+      number: null,
+      image: { uri : null }
+
+    };
+
+    //this._showNumber = this._showNumber.bind(this)
+  
+  
 
 
   componentWillMount() {
@@ -40,6 +47,7 @@ export default class SettingsScreen extends React.Component {
               this.setState({
                 profile: childSnapshot.val(),
                 number: childSnapshot.val().phone,
+                image: { uri: childSnapshot.val().picture.data.url} 
               })
               //alert(childSnapshot.val().email);
             });
@@ -62,12 +70,24 @@ export default class SettingsScreen extends React.Component {
 
 
   
+  handleChoosePhoto = () => {
+    const options = {
+      noData: true,
+    }
+    ImagePicker.launchImageLibrary(options, response => {
+      if (response.uri) {
+        this.setState({ image : response })
+      }
+    })
+  }
+
+
 
   renderProfile(){
-    const { profile, number } = this.state;
+    const { profile, number, image } = this.state;
    
     
-    
+    //alert(number);
     return (
       profile ?
         <View><Text> WellCome {profile.name} </Text>
@@ -78,7 +98,7 @@ export default class SettingsScreen extends React.Component {
             onChangeText={(text) => this.setState({ number:text })}
             value={number}
         />
-          <Image source={{ uri: profile.picture.data.url }}
+          <Image source={{ uri: image.uri }}
             style={{ width: 400, height: 400 }} />
 
        </View> : <Text> Loading... </Text>
@@ -92,6 +112,7 @@ export default class SettingsScreen extends React.Component {
     try {
       await firebase.auth().signOut();
       alert('You have Logout Successfully');
+     
       // signed out
     } catch (e) {
       // an error
@@ -125,6 +146,8 @@ export default class SettingsScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.label}>Update Your Profile!!</Text>
+
+        <Button title="Choose Photo" onPress={this.handleChoosePhoto} color="#841584"/>
         <TouchableOpacity>{this.renderProfile()}</TouchableOpacity>
 
         <Button
