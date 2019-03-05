@@ -11,15 +11,20 @@ import {
 
 
 import { firebase, firedb } from '../config/firebase';
-//import ImagePicker from 'react-native-image-picker'
-import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-picker'
+//import ImagePicker from 'react-native-image-crop-picker';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'Profile',
   };
 
-
+const options = {
+  title: 'Select Avatar',
+  takePhotoButtonTitle : 'Take a photo',
+  chooseFromLibraryButtonTitle : 'Choose from gallery',
+  quality : 1
+};
 
     state = {
       user: null,
@@ -86,14 +91,28 @@ export default class SettingsScreen extends React.Component {
       // };
 
 
-      ImagePicker.openPicker({
-        width: 300,
-        height: 400,
-        cropping: true
-      }).then(image => {
-        alert(image);
-        console.log(image);
-      });
+          ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = { uri: response.uri };
+
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        this.setState({
+          image: source,
+        });
+      }
+    });
+
+
 
     } catch (error) {
       alert(error)
@@ -119,6 +138,7 @@ export default class SettingsScreen extends React.Component {
             onChangeText={(text) => this.setState({ number:text })}
             value={number}
         />
+
           <Image source={{ uri: image }}
             style={{ width: 400, height: 400 }} />
 
@@ -153,7 +173,13 @@ export default class SettingsScreen extends React.Component {
       <View style={styles.container}>
         <Text style={styles.label}>Update Your Profile!!</Text>
 
-        <Button title="Choose Photo" onPress={this.handleChoosePhoto} color="#841584"/>
+        {/* <Button title="Choose Photo" onPress={this.handleChoosePhoto} color="#841584"/> */}
+
+
+      <TouchableOpacity style={styles.button} onPress={this.handleChoosePhoto.bind(this)} > 
+        <Text style={styles.text}>Select</Text>
+        </TouchableOpacity>
+        
         <TouchableOpacity>{this.renderProfile()}</TouchableOpacity>
 
         <Button
@@ -209,7 +235,21 @@ const styles = StyleSheet.create({
 
 
     backgroundColor: '#F5FCFF',
-  }, label: {
+  }, 
+  button :{
+    width:250,
+    heigt:50,
+    backgroundColor: '#F5FCFF',
+    bordorRadius : 30,
+    justifyContent : 'center',
+    marginTop : 15
+  },
+  text :{
+    color : 'white',
+    fontSize : 18,
+    textAlign: 'center'
+  },
+  label: {
     fontSize: 16,
     fontWeight: 'normal',
     marginBottom: 48,
