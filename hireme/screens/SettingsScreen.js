@@ -19,12 +19,6 @@ export default class SettingsScreen extends React.Component {
     title: 'Profile',
   };
 
-const options = {
-  title: 'Select Avatar',
-  takePhotoButtonTitle : 'Take a photo',
-  chooseFromLibraryButtonTitle : 'Choose from gallery',
-  quality : 1
-};
 
     state = {
       user: null,
@@ -90,6 +84,13 @@ const options = {
       //   },
       // };
 
+
+const options = {
+  title: 'Select a photo',
+  takePhotoButtonTitle : 'Take a photo',
+  chooseFromLibraryButtonTitle : 'Choose from gallery',
+  quality : 1
+};
 
           ImagePicker.showImagePicker(options, (response) => {
       console.log('Response = ', response);
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
   }, 
   button :{
     width:250,
-    heigt:50,
+    height:50,
     backgroundColor: '#F5FCFF',
     bordorRadius : 30,
     justifyContent : 'center',
