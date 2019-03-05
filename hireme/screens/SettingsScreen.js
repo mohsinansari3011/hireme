@@ -241,12 +241,12 @@ const styles = StyleSheet.create({
     width:250,
     height:50,
     backgroundColor: '#F5FCFF',
-    bordorRadius : 30,
+    borderRadius : 30,
     justifyContent : 'center',
     marginTop : 15
   },
   text :{
-    color : 'white',
+    color : 'black',
     fontSize : 18,
     textAlign: 'center'
   },
