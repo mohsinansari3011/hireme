@@ -93,7 +93,7 @@ const options = {
 };
 
           ImagePicker.showImagePicker(options, (response) => {
-            alert('response --- '+response);
+            alert('response ---'+response);
 
       if (response.didCancel) {
         console.log('User cancelled image picker');

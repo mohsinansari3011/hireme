@@ -34,6 +34,9 @@ import expolib_v1.okhttp3.OkHttpClient;
 
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
+import com.imagepicker.ImagePickerPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
 
 public class MainApplication extends ExpoApplication implements AppLoaderPackagesProviderInterface<ReactPackage> {
 
@@ -49,7 +52,10 @@ public class MainApplication extends ExpoApplication implements AppLoaderPackage
         // TODO: add native modules!
 
         // Needed for `react-native link`
-        // new MainReactPackage()
+        // new MainReactPackage(),
+            new ImagePickerPackage(),
+            new PickerPackage(),
+            new FBSDKPackage()
     );
   }
 
