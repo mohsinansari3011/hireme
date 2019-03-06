@@ -38,7 +38,7 @@ export default class SettingsScreen extends React.Component {
       aspect: [4, 3],
     });
 
-    console.log(result);
+    //console.log(result);
 
     if (!result.cancelled) {
       this.setState({ image: result.uri });
@@ -50,14 +50,14 @@ export default class SettingsScreen extends React.Component {
 
   _updatedata = () => {
 
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        console.log(user.uid);
-      }
-    });
-    
+    // firebase.auth().onAuthStateChanged((user) => {
+    //   if (user) {
+    //     console.log(user.uid);
+    //   }
+    // });
+
     const { user, number } = this.state;
-    console.log('user----- ', user);
+    console.log('user----- ', user.id);
     firedb.ref('users/' + user.uid).update({
       number
     });
@@ -75,7 +75,7 @@ export default class SettingsScreen extends React.Component {
 
     let location = await Location.getCurrentPositionAsync({});
     this.setState({ location });
-    console.log('location------',location);
+    //console.log('location------',location);
   };
 
 
