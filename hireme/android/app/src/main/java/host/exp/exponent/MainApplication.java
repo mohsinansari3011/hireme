@@ -34,6 +34,7 @@ import expolib_v1.okhttp3.OkHttpClient;
 
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
@@ -53,6 +54,7 @@ public class MainApplication extends ExpoApplication implements AppLoaderPackage
 
         // Needed for `react-native link`
         // new MainReactPackage(),
+            new RNFetchBlobPackage(),
             new ImagePickerPackage(),
             new PickerPackage(),
             new FBSDKPackage()

@@ -11,14 +11,11 @@ import {
 
 import { firebase, firedb } from '../config/firebase';
 
-import { Constants, Location, Permissions, ImagePicker } from 'expo';
+import { Constants, Location, Permissions, ImagePicker, RNFetchBlob } from 'expo';
 
-import RNFetchBlob from 'react-native-fetch-blob'
+//import RNFetchBlob from 'react-native-fetch-blob'
 
-const Blob = RNFetchBlob.polyfill.Blob
-const fs = RNFetchBlob.fs
-window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-window.Blob = Blob
+//var RNFetchBlob = require('react-native-fetch-blob')
 
 //import ImagePicker  from 'react-native-image-picker'
 //import ImagePicker from 'react-native-image-crop-picker';
@@ -75,6 +72,7 @@ export default class SettingsScreen extends React.Component {
         picture: { data: { url: image } }
       });
 
+      console.log('image--- ',image);
       this.uploadImage(image, userid)
         .then(()=> { alert('uploaded'); })
         .catch(error => console.log(error))
@@ -91,10 +89,19 @@ export default class SettingsScreen extends React.Component {
 
 
   uploadImage(uri, uid ,  mime = 'image/jpeg') {
+
+    
+    const Blob = RNFetchBlob.polyfill.Blob
+    const fs = RNFetchBlob.fs
+    console.log('uidx-----', uid);
+    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+    window.Blob = Blob
+
+    
     return new Promise((resolve, reject) => {
       const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
       let uploadBlob = null
-
+      console.log('uploadUri-----', uploadUri);
       const imageRef = firebase.storage().ref('userimages').child(uid)
 
       fs.readFile(uploadUri, 'base64')
