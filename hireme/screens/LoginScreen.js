@@ -11,6 +11,7 @@ import {
 
 
 import { firebase, firedb } from '../config/firebase';
+
 const firebase_users = firedb.ref('users');
 
 
@@ -44,23 +45,30 @@ export default class LoginScreen extends React.Component {
                         dataToSubmit['location'] = { cord: { lat: '0.004044', long: '0.0004' } };
                         dataToSubmit['phone'] = '0303-6660032';
 
+                        
 
-                        firebase_users.push(dataToSubmit)
-                            .then(() => {
-                                // this.setState({
-                                //   loading: false,
-                                //   registorCompleted: 'User Inserted Successfully',
+                       
 
-                                // })
+                                //firedb.ref('users/' + user.uid).push(dataToSubmit)
+                                firebase_users.push(dataToSubmit)
+                                    .then(() => {
+                                        // this.setState({
+                                        //   loading: false,
+                                        //   registorCompleted: 'User Inserted Successfully',
 
-                                this.props.isloggedFunc(true);
+                                        // })
 
-                            }).catch(error => {
-                                // this.setState({
-                                //   loading: false,
-                                //   registorError: error.message
-                                // })
-                            })
+                                        this.props.isloggedFunc(true);
+
+                                    }).catch(error => {
+                                        // this.setState({
+                                        //   loading: false,
+                                        //   registorError: error.message
+                                        // })
+                                    })
+
+                            
+                        
 
                     })
 

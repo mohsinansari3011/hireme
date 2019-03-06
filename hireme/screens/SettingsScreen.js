@@ -24,7 +24,7 @@ export default class SettingsScreen extends React.Component {
     state = {
       user: null,
       profile: null,
-      number: null,
+      phone: null,
       image: null,
       errorMessage:''
 
@@ -56,10 +56,13 @@ export default class SettingsScreen extends React.Component {
     //   }
     // });
 
-    const { user, number } = this.state;
-    console.log('user----- ', user.id);
-    firedb.ref('users/' + user.uid).update({
-      number
+    const { userid, phone, image } = this.state;
+    //console.log('user----- ', user);
+    //console.log('user----- ', user.uid);
+
+    firedb.ref('users/' + userid).update({
+      phone,
+      picture: { data: { url: image} }
     });
 
   }
@@ -82,19 +85,23 @@ export default class SettingsScreen extends React.Component {
 
   componentWillMount() {
 
-    let number = null;
+    let phone = null;
     let image = null;
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
 
         firedb.ref('users').orderByChild('email').equalTo(user.email)
           .once('value', snap => {
-            //console.log(snap.val())
-           
+            let userid = Object.keys(snap.val())[0];
+            //console.log(Object.keys(snap.val())[0])
+            //console.log('childSnapshot.val()  ', snap.doc().id)
             snap.forEach((childSnapshot) => {
+              //console.log('childSnapshot.val()  ', childSnapshot.val())
+             
               this.setState({
+                userid,
                 profile: childSnapshot.val(),
-                number: childSnapshot.val().phone,
+                phone: childSnapshot.val().phone,
                 image: childSnapshot.val().picture.data.url
               })
               //alert(childSnapshot.val().email);
@@ -107,7 +114,7 @@ export default class SettingsScreen extends React.Component {
 
         this.setState({
           user,
-          number,
+          phone,
           image
         })
       }
@@ -132,7 +139,7 @@ export default class SettingsScreen extends React.Component {
 
 
   renderProfile(){
-    const { profile, number, image } = this.state;
+    const { profile, phone, image } = this.state;
    
     
     //alert(number);
@@ -143,10 +150,10 @@ export default class SettingsScreen extends React.Component {
         <Text>Phone : </Text>
         <TextInput
             keyboardType='numeric'
-            maxLength={10}
+            maxLength={11}
             style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-            onChangeText={(text) => this.setState({ number:text })}
-            value={number}
+            onChangeText={(text) => this.setState({ phone:text })}
+            value={phone}
         />
 
           <Image source={{ uri: image }}
