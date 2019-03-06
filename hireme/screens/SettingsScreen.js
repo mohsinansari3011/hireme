@@ -11,7 +11,7 @@ import {
 
 
 import { firebase, firedb } from '../config/firebase';
-import ImagePicker from 'react-native-image-picker'
+import ImagePicker  from 'react-native-image-picker'
 //import ImagePicker from 'react-native-image-crop-picker';
 
 export default class SettingsScreen extends React.Component {
@@ -93,7 +93,7 @@ const options = {
 };
 
           ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
+            alert('response --- '+response);
 
       if (response.didCancel) {
         console.log('User cancelled image picker');
