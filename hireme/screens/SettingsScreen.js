@@ -12,6 +12,14 @@ import {
 import { firebase, firedb } from '../config/firebase';
 
 import { Constants, Location, Permissions, ImagePicker } from 'expo';
+
+import RNFetchBlob from 'react-native-fetch-blob'
+
+const Blob = RNFetchBlob.polyfill.Blob
+const fs = RNFetchBlob.fs
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+window.Blob = Blob
+
 //import ImagePicker  from 'react-native-image-picker'
 //import ImagePicker from 'react-native-image-crop-picker';
 
@@ -60,12 +68,58 @@ export default class SettingsScreen extends React.Component {
     //console.log('user----- ', user);
     //console.log('user----- ', user.uid);
 
-    firedb.ref('users/' + userid).update({
-      phone,
-      picture: { data: { url: image} }
-    });
+    try {
+      
+      firedb.ref('users/' + userid).update({
+        phone,
+        picture: { data: { url: image } }
+      });
+
+      this.uploadImage(image, userid)
+        .then(()=> { alert('uploaded'); })
+        .catch(error => console.log(error))
+
+
+      
+    } catch (error) {
+      
+    }
+   
+
 
   }
+
+
+  uploadImage(uri, uid ,  mime = 'image/jpeg') {
+    return new Promise((resolve, reject) => {
+      const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
+      let uploadBlob = null
+
+      const imageRef = firebase.storage().ref('userimages').child(uid)
+
+      fs.readFile(uploadUri, 'base64')
+        .then((data) => {
+          return Blob.build(data, { type: `${mime};BASE64` })
+        })
+        .then((blob) => {
+          uploadBlob = blob
+          return imageRef.put(blob, { contentType: mime })
+        })
+        .then(() => {
+          uploadBlob.close()
+          return imageRef.getDownloadURL()
+        })
+        .then((url) => {
+          resolve(url)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+
+
 
 
   _getLocationAsync = async () => {
