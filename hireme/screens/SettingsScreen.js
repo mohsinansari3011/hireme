@@ -9,9 +9,10 @@ import {
   View, Button, TextInput,
 } from 'react-native';
 
-
 import { firebase, firedb } from '../config/firebase';
-import ImagePicker  from 'react-native-image-picker'
+
+import { Constants, Location, Permissions, ImagePicker } from 'expo';
+//import ImagePicker  from 'react-native-image-picker'
 //import ImagePicker from 'react-native-image-crop-picker';
 
 export default class SettingsScreen extends React.Component {
@@ -24,13 +25,59 @@ export default class SettingsScreen extends React.Component {
       user: null,
       profile: null,
       number: null,
-      image: null
+      image: null,
+      errorMessage:''
 
     };
 
     //this._showNumber = this._showNumber.bind(this)
   
-  
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
+  };
+
+
+
+
+  _updatedata = () => {
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log(user.uid);
+      }
+    });
+    
+    const { user, number } = this.state;
+    console.log('user----- ', user);
+    firedb.ref('users/' + user.uid).update({
+      number
+    });
+
+  }
+
+
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    this.setState({ location });
+    console.log('location------',location);
+  };
+
 
 
   componentWillMount() {
@@ -66,59 +113,21 @@ export default class SettingsScreen extends React.Component {
       }
     })
 
+    //console.log(Platform.OS)
+    if (Platform.OS === 'android' && !Constants.isDevice) {
+      this.setState({
+        errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
+      });
+    } else {
+      this._getLocationAsync();
+    }
+
 
 
   }
 
 
   
-  handleChoosePhoto = () => {
-    try {
-
-      // const options = {
-      //   title: 'Select Avatar',
-      //   customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-      //   storageOptions: {
-      //     skipBackup: true,
-      //     path: 'images',
-      //   },
-      // };
-
-
-const options = {
-  title: 'Select a photo',
-  takePhotoButtonTitle : 'Take a photo',
-  chooseFromLibraryButtonTitle : 'Choose from gallery',
-  quality : 1
-};
-
-          ImagePicker.showImagePicker(options, (response) => {
-            alert('response ---'+response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const source = { uri: response.uri };
-
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-        this.setState({
-          image: source,
-        });
-      }
-    });
-
-
-
-    } catch (error) {
-      alert(error)
-    }
-  }
 
 
 
@@ -154,7 +163,7 @@ const options = {
     try {
       await firebase.auth().signOut();
       alert('You have Logout Successfully');
-     
+      this.props.navigation.navigate("LoginScreen");
       // signed out
     } catch (e) {
       // an error
@@ -174,26 +183,29 @@ const options = {
       <View style={styles.container}>
         <Text style={styles.label}>Update Your Profile!!</Text>
 
-        {/* <Button title="Choose Photo" onPress={this.handleChoosePhoto} color="#841584"/> */}
-
-
-      <TouchableOpacity style={styles.button} onPress={this.handleChoosePhoto.bind(this)} > 
-        <Text style={styles.text}>Select</Text>
-        </TouchableOpacity>
         
-        <TouchableOpacity>{this.renderProfile()}</TouchableOpacity>
 
         <Button
-          onPress={this._showNumber}
-          title="ShowData"
-          color="#841584"
-          accessibilityLabel="Logout From Facebook"
+          title="Pick an image from camera roll"
+          onPress={this._pickImage}
+          color='#093d53'
+        />
+     
+        
+        <ScrollView>{this.renderProfile()}</ScrollView>
+
+
+
+        <Button
+          title="Update Profile"
+          color='#093d53'
+          onPress={this._updatedata}
         />
 
         <Button
           onPress={this._LogoutHireMe}
           title="Logout"
-          color="#841584"
+          color='#093d53'
           accessibilityLabel="Logout From Facebook"
         />
 
@@ -201,6 +213,10 @@ const options = {
       </View>
     );
   }
+
+
+
+
 
 
   render() {
@@ -246,9 +262,10 @@ const styles = StyleSheet.create({
     marginTop : 15
   },
   text :{
-    color : 'black',
+    color : 'white',
     fontSize : 18,
-    textAlign: 'center'
+    textAlign: 'center',
+    backgroundColor:"#841584"
   },
   label: {
     fontSize: 16,
