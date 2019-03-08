@@ -14,6 +14,7 @@ import { firebase, firedb } from '../config/firebase';
 
 
 
+
 export default class HomeScreen extends React.Component {
 
   
@@ -39,64 +40,39 @@ export default class HomeScreen extends React.Component {
               user,
               snap
             })
-
-
-            // snap.forEach((childSnapshot) => {
-            //   //console.log('pictue -- ', childSnapshot.val());
-              
-            //   // <View>
-            //   //   <Text>Testing..</Text>
-            //   // <View>
-            //   //   <Image source={{ uri: childSnapshot.val().picture.data.url }}
-            //   //     style={{ width: 200, height: 200 }} />
-            //   // </View>
-
-            //   // <View>
-            //   //   <Text> {childSnapshot.val().name} </Text>
-            //   // </View>
-            //   // <View>
-            //   //   <Text> {childSnapshot.val().phone} </Text>
-            //   // </View>
-            //   // </View>
-            // })
-
-
-            
-
-            // let userid = Object.keys(snap.val())[0];
-            // console.log(Object.keys(snap.val())[0])
-            //console.log('childSnapshot.val()  ', snap.doc().id)
-            // snap.forEach((childSnapshot) => {
-            //   console.log('childSnapshot.val()  ', childSnapshot.val())
-
-            //   // this.setState({
-            //   //   userid,
-            //   //   profile: childSnapshot.val(),
-            //   //   phone: childSnapshot.val().phone,
-            //   //   image: childSnapshot.val().picture.data.url,
-            //   //   location: childSnapshot.val().location
-            //   // })
-            //   //alert(childSnapshot.val().email);
-            // });
-
-
-
-
-          })
-
-       
-        
+          }) 
       }
     })
   }
 
 
 
+  componentWillUpdate(){
+    console.log('componentWillUpdate');
+  }
+
+  componentDidUpdate() {
+    console.log('componentDidUpdate');
+  }
+
+  componentDidMount(){
+    console.log('componentDidMount');
+  }
+
+// shouldComponentUpdate(){
+//   console.log('shouldComponentUpdate');
+// }
+
   renderUsers(){
 
     const { snap, userarr } = this.state;
       snap.forEach((childSnapshot) => {
-        userarr.push(childSnapshot.val());
+        if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
+          //userarr.push(childSnapshot.val());
+        }else{
+          userarr.push(childSnapshot.val());
+        }
+        
       })
 
       
