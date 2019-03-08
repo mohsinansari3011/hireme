@@ -161,7 +161,7 @@ export default class LoginScreen extends React.Component {
                             style={styles.welcomeImage}
                         />
                     </View>
-
+                   
                     {this.renderButton()}
 
                 </ScrollView>
