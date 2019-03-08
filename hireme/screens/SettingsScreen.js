@@ -109,10 +109,14 @@ export default class SettingsScreen extends React.Component {
       contentType: 'image/jpeg',
     };
 
-    const url =  (downloadURL = await new Promise((resolve, reject) => {
+    (downloadURL = await new Promise((resolve, reject) => {
       try {
         storageRef.put(blob, metadata).then(snapshot => {
           snapshot.ref.getDownloadURL().then(downloadURL => {
+            this.setState({
+              image: downloadURL
+            })  
+
             resolve(downloadURL);
           });
         });
@@ -121,9 +125,7 @@ export default class SettingsScreen extends React.Component {
       }
     }));
 
-    url ? this.setState({
-      image : url
-    }) : ''
+   
     //console.log('url---- ', url);
   }
 

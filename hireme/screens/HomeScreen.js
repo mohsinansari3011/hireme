@@ -13,6 +13,7 @@ import { firebase, firedb } from '../config/firebase';
 
 
 
+
 export default class HomeScreen extends React.Component {
 
   
@@ -21,7 +22,8 @@ export default class HomeScreen extends React.Component {
   };
 
   state = {
-    user: null,
+    user: '',
+    snap:'',
     userarr : []
   };
 
@@ -93,42 +95,38 @@ export default class HomeScreen extends React.Component {
   renderUsers(){
 
     const { snap, userarr } = this.state;
-    
-    
-      
-      // userarr.map((item) =>{
-      //   console.log(item);
-      // })
-     
       snap.forEach((childSnapshot) => {
-        //console.log('pictue -- ', childSnapshot.val());
         userarr.push(childSnapshot.val());
-        // <View>
-        //   <Text>Testing..</Text>
-        // <View>
-        //   <Image source={{ uri: childSnapshot.val().picture.data.url }}
-        //     style={{ width: 200, height: 200 }} />
-        // </View>
-
-        // <View>
-        //   <Text> {childSnapshot.val().name} </Text>
-        // </View>
-        // <View>
-        //   <Text> {childSnapshot.val().phone} </Text>
-        // </View>
-        // </View>
       })
 
       
     
+return(
+    userarr ? userarr.map((item,i) =>{
+      //console.log('item --- ',item.email);
+      return(
+                <View key={i}>
+        <View>
+            <Image source={{ uri: item.picture.data.url }}
+            style={{ width: 100, height: 100 }} />
+        </View>
 
-    userarr ? userarr.map((item) =>{
-      console.log('item --- ',item);
-    })
+        <View>
+            <Text> {item.name} </Text>
+        </View>
+        <View>
+            <Text> {item.phone} </Text>
+        </View>
+        </View>
 
+      )
+
+    }) : <View><Text>Loading....</Text></View>
+)
   }
 
   render() {
+    console.log('home redner');
     const { snap } = this.state;
     return (
       <View style={styles.container}>
@@ -142,23 +140,6 @@ export default class HomeScreen extends React.Component {
             />
           </View>
 
-          <View>
-            <Text>Testing..</Text>
-            <View>
-              <Image source={{ uri: "https://firebasestorage.googleapis.com/v0/b/hireme-3011.appspot.com/o/photos%2Fprofile_-L_IXxtSwkOb19uGPZAw.jpg?alt=media&token=77ee5c14-2f82-48b5-8fdd-821c4409aa4c" }}
-                style={{ width: 100, height: 100 }} />
-            </View>
-
-            <View>
-              <Text> MohsinAA </Text>
-            </View>
-            <View>
-              <Text> 12312312312 </Text>
-            </View>
-          </View>
-       
-
-       
           {snap ? this.renderUsers() : <View><Text>Loading....</Text></View>}
         </ScrollView>
 
