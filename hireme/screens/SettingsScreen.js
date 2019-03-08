@@ -38,6 +38,7 @@ export default class SettingsScreen extends React.Component {
     //this._showNumber = this._showNumber.bind(this)
   
   _pickImage = async () => {
+    //await this.getCameraRollPermission()
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
@@ -46,6 +47,7 @@ export default class SettingsScreen extends React.Component {
     //console.log(result);
 
     if (!result.cancelled) {
+      this._handlePhotoChoice(result)
       this.setState({ image: result.uri });
     }
   };
@@ -87,42 +89,118 @@ export default class SettingsScreen extends React.Component {
 
   }
 
+dataURLtoBlob(dataurl) {
+  var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
+}
+
+  _handlePhotoChoice = async pickerResult => {
+    // File or Blob named mountains.jpg
+    var file = dataURLtoBlob(pickerResult.uri);
+
+    // Create the file metadata
+    var metadata = {
+      contentType: 'image/jpeg'
+    };
+
+    // Upload file and metadata to the object 'images/mountains.jpg'
+    var uploadTask = storageRef.child('images/mountains.jpg').put(file, metadata);
+
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+      function (snapshot) {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+            console.log('Upload is paused');
+            break;
+          case firebase.storage.TaskState.RUNNING: // or 'running'
+            console.log('Upload is running');
+            break;
+        }
+      }, function (error) {
+
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        switch (error.code) {
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+
+    //...
+
+    case 'storage/unknown':
+      // Unknown error occurred, inspect error.serverResponse
+      break;
+  }
+}, function() {
+  // Upload completed successfully, now we can get the download URL
+  uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+    console.log('File available at', downloadURL);
+  });
+});
+  }
+
 
   uploadImage(uri, uid ,  mime = 'image/jpeg') {
 
-    
-    const Blob = RNFetchBlob.polyfill.Blob
-    const fs = RNFetchBlob.fs
-    console.log('uidx-----', uid);
-    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-    window.Blob = Blob
+    let fileUri = decodeURI(uri);
+    console.log('uidx-----', fileUri);
+
+    firebase
+      .storage()
+      .ref('photos/profile_' + uid + '.jpg')
+      .putFile(fileUri)
+      .then(uploadedFile => {
+        console.log("Firebase profile photo uploaded successfully")
+      })
+      .catch(error => {
+        console.log("Firebase profile upload failed: " + error)
+      })
+
+
+    // const Blob = RNFetchBlob.polyfill.Blob
+    // const fs = RNFetchBlob.fs
+    // console.log('uidx-----', uid);
+    // window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+    // window.Blob = Blob
 
     
-    return new Promise((resolve, reject) => {
-      const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
-      let uploadBlob = null
-      console.log('uploadUri-----', uploadUri);
-      const imageRef = firebase.storage().ref('userimages').child(uid)
+    // return new Promise((resolve, reject) => {
+    //   const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
+    //   let uploadBlob = null
+    //   console.log('uploadUri-----', uploadUri);
+    //   const imageRef = firebase.storage().ref('userimages').child(uid)
 
-      fs.readFile(uploadUri, 'base64')
-        .then((data) => {
-          return Blob.build(data, { type: `${mime};BASE64` })
-        })
-        .then((blob) => {
-          uploadBlob = blob
-          return imageRef.put(blob, { contentType: mime })
-        })
-        .then(() => {
-          uploadBlob.close()
-          return imageRef.getDownloadURL()
-        })
-        .then((url) => {
-          resolve(url)
-        })
-        .catch((error) => {
-          reject(error)
-        })
-    })
+    //   fs.readFile(uploadUri, 'base64')
+    //     .then((data) => {
+    //       return Blob.build(data, { type: `${mime};BASE64` })
+    //     })
+    //     .then((blob) => {
+    //       uploadBlob = blob
+    //       return imageRef.put(blob, { contentType: mime })
+    //     })
+    //     .then(() => {
+    //       uploadBlob.close()
+    //       return imageRef.getDownloadURL()
+    //     })
+    //     .then((url) => {
+    //       resolve(url)
+    //     })
+    //     .catch((error) => {
+    //       reject(error)
+    //     })
+    // })
   }
 
 
