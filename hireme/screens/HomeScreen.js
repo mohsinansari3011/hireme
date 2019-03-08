@@ -11,6 +11,8 @@ import {
 
 import { firebase, firedb } from '../config/firebase';
 
+
+
 export default class HomeScreen extends React.Component {
 
   
@@ -20,14 +22,14 @@ export default class HomeScreen extends React.Component {
 
   state = {
     user: null,
-    snap : null
+    userarr : []
   };
 
 
   componentWillMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
-
+      
         firedb.ref('users')
           .once('value', snap => {
 
@@ -35,6 +37,29 @@ export default class HomeScreen extends React.Component {
               user,
               snap
             })
+
+
+            // snap.forEach((childSnapshot) => {
+            //   //console.log('pictue -- ', childSnapshot.val());
+              
+            //   // <View>
+            //   //   <Text>Testing..</Text>
+            //   // <View>
+            //   //   <Image source={{ uri: childSnapshot.val().picture.data.url }}
+            //   //     style={{ width: 200, height: 200 }} />
+            //   // </View>
+
+            //   // <View>
+            //   //   <Text> {childSnapshot.val().name} </Text>
+            //   // </View>
+            //   // <View>
+            //   //   <Text> {childSnapshot.val().phone} </Text>
+            //   // </View>
+            //   // </View>
+            // })
+
+
+            
 
             // let userid = Object.keys(snap.val())[0];
             // console.log(Object.keys(snap.val())[0])
@@ -57,6 +82,7 @@ export default class HomeScreen extends React.Component {
 
           })
 
+       
         
       }
     })
@@ -66,26 +92,39 @@ export default class HomeScreen extends React.Component {
 
   renderUsers(){
 
-    const { snap } = this.state;
+    const { snap, userarr } = this.state;
     
-    return (
+    
       
+      // userarr.map((item) =>{
+      //   console.log(item);
+      // })
+     
       snap.forEach((childSnapshot) => {
-      return (<View>
-        <View>
-          <Image source={{ uri: childSnapshot.val().picture.data.url }}
-            style={{ width: 200, height: 200 }} />
-        </View>
+        //console.log('pictue -- ', childSnapshot.val());
+        userarr.push(childSnapshot.val());
+        // <View>
+        //   <Text>Testing..</Text>
+        // <View>
+        //   <Image source={{ uri: childSnapshot.val().picture.data.url }}
+        //     style={{ width: 200, height: 200 }} />
+        // </View>
 
-        <View>
-          <Text> {childSnapshot.val().name} </Text>
-        </View>
-        <View>
-          <Text> {childSnapshot.val().phone} </Text>
-        </View>
-      </View>)
-    }) 
-    )
+        // <View>
+        //   <Text> {childSnapshot.val().name} </Text>
+        // </View>
+        // <View>
+        //   <Text> {childSnapshot.val().phone} </Text>
+        // </View>
+        // </View>
+      })
+
+      
+    
+
+    userarr ? userarr.map((item) =>{
+      console.log('item --- ',item);
+    })
 
   }
 
@@ -103,8 +142,24 @@ export default class HomeScreen extends React.Component {
             />
           </View>
 
+          <View>
+            <Text>Testing..</Text>
+            <View>
+              <Image source={{ uri: "https://firebasestorage.googleapis.com/v0/b/hireme-3011.appspot.com/o/photos%2Fprofile_-L_IXxtSwkOb19uGPZAw.jpg?alt=media&token=77ee5c14-2f82-48b5-8fdd-821c4409aa4c" }}
+                style={{ width: 100, height: 100 }} />
+            </View>
+
+            <View>
+              <Text> MohsinAA </Text>
+            </View>
+            <View>
+              <Text> 12312312312 </Text>
+            </View>
+          </View>
        
-          { snap ? this.renderUsers() : <View><Text>Loading....</Text></View>}
+
+       
+          {snap ? this.renderUsers() : <View><Text>Loading....</Text></View>}
         </ScrollView>
 
       

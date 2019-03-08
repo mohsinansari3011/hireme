@@ -211,7 +211,7 @@ export default class SettingsScreen extends React.Component {
     //alert(number);
     return (
       profile ?
-        <View><Text> WellCome {profile.name} </Text>
+        <View><Text> Hello {profile.name} </Text>
           <Text>Email : {profile.email}</Text>
         <Text>Phone : </Text>
         <TextInput
