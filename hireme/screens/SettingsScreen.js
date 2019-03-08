@@ -67,7 +67,7 @@ export default class SettingsScreen extends React.Component {
         location
       });
 
-     
+      alert('Profile Updated Successfully');
 
 
       
@@ -167,7 +167,8 @@ export default class SettingsScreen extends React.Component {
                 userid,
                 profile: childSnapshot.val(),
                 phone: childSnapshot.val().phone,
-                image: childSnapshot.val().picture.data.url
+                image: childSnapshot.val().picture.data.url,
+                location: childSnapshot.val().location
               })
               //alert(childSnapshot.val().email);
             });
@@ -235,7 +236,7 @@ export default class SettingsScreen extends React.Component {
     try {
       await firebase.auth().signOut();
       alert('You have Logout Successfully');
-      this.props.navigation.navigate("LoginScreen");
+      this.props.navigation.navigate("HomeStack");
       // signed out
     } catch (e) {
       // an error
@@ -256,30 +257,29 @@ export default class SettingsScreen extends React.Component {
         <Text style={styles.label}>Update Your Profile!!</Text>
 
         
-
-        <Button
+<TouchableOpacity><Button
           title="Pick an image from camera roll"
           onPress={this._pickImage}
           color='#093d53'
-        />
+          /></TouchableOpacity>
      
         
         <ScrollView>{this.renderProfile()}</ScrollView>
 
 
 
-        <Button
+        <TouchableOpacity><Button
           title="Update Profile"
           color='#093d53'
           onPress={this._updatedata}
-        />
+        /></TouchableOpacity>
 
-        <Button
+        <TouchableOpacity><Button
           onPress={this._LogoutHireMe}
           title="Logout"
           color='#093d53'
           accessibilityLabel="Logout From Facebook"
-        />
+        /></TouchableOpacity>
 
 
       </View>
@@ -292,6 +292,8 @@ export default class SettingsScreen extends React.Component {
 
 
   render() {
+    const { user } = this.state;
+    //console.log('render user ', user);
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>

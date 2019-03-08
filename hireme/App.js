@@ -5,6 +5,8 @@ import AppNavigator from './navigation/AppNavigator';
 import Login from './screens/LoginScreen';
 import { firebase } from './config/firebase';
 
+
+
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,

@@ -6,11 +6,10 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View, Button,
+  View, Button, TextInput,
 } from 'react-native';
 
-
-import { firebase } from '../config/firebase';
+import { firebase, firedb } from '../config/firebase';
 
 export default class HomeScreen extends React.Component {
 
@@ -21,22 +20,77 @@ export default class HomeScreen extends React.Component {
 
   state = {
     user: null,
+    snap : null
   };
 
 
   componentWillMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
-        this.setState({
-          user
-        })
+
+        firedb.ref('users')
+          .once('value', snap => {
+
+            this.setState({
+              user,
+              snap
+            })
+
+            // let userid = Object.keys(snap.val())[0];
+            // console.log(Object.keys(snap.val())[0])
+            //console.log('childSnapshot.val()  ', snap.doc().id)
+            // snap.forEach((childSnapshot) => {
+            //   console.log('childSnapshot.val()  ', childSnapshot.val())
+
+            //   // this.setState({
+            //   //   userid,
+            //   //   profile: childSnapshot.val(),
+            //   //   phone: childSnapshot.val().phone,
+            //   //   image: childSnapshot.val().picture.data.url,
+            //   //   location: childSnapshot.val().location
+            //   // })
+            //   //alert(childSnapshot.val().email);
+            // });
+
+
+
+
+          })
+
+        
       }
     })
   }
 
 
 
+  renderUsers(){
+
+    const { snap } = this.state;
+    
+    return (
+      
+      snap.forEach((childSnapshot) => {
+      return (<View>
+        <View>
+          <Image source={{ uri: childSnapshot.val().picture.data.url }}
+            style={{ width: 200, height: 200 }} />
+        </View>
+
+        <View>
+          <Text> {childSnapshot.val().name} </Text>
+        </View>
+        <View>
+          <Text> {childSnapshot.val().phone} </Text>
+        </View>
+      </View>)
+    }) 
+    )
+
+  }
+
   render() {
+    const { snap } = this.state;
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -50,7 +104,7 @@ export default class HomeScreen extends React.Component {
           </View>
 
        
-         
+          { snap ? this.renderUsers() : <View><Text>Loading....</Text></View>}
         </ScrollView>
 
       

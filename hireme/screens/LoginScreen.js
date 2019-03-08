@@ -42,8 +42,8 @@ export default class LoginScreen extends React.Component {
                         dataToSubmit['date'] = firebase.database.ServerValue.TIMESTAMP;
                         dataToSubmit['isdelete'] = false;
                         dataToSubmit['isblock'] = false;
-                        dataToSubmit['location'] = { cord: { lat: '0.004044', long: '0.0004' } };
-                        dataToSubmit['phone'] = '0303-6660032';
+                        dataToSubmit['location'] = { cord: { latitude: '24.8522706', longitude: '67.0346987' } };
+                        dataToSubmit['phone'] = '';
 
                         
 
