@@ -10,15 +10,7 @@ import {
 } from 'react-native';
 
 import { firebase, firedb } from '../config/firebase';
-
-import { Constants, Location, Permissions, ImagePicker, RNFetchBlob } from 'expo';
-
-//import RNFetchBlob from 'react-native-fetch-blob'
-
-//var RNFetchBlob = require('react-native-fetch-blob')
-
-//import ImagePicker  from 'react-native-image-picker'
-//import ImagePicker from 'react-native-image-crop-picker';
+import { Constants, Location, Permissions, ImagePicker } from 'expo';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
@@ -31,11 +23,11 @@ export default class SettingsScreen extends React.Component {
       profile: null,
       phone: null,
       image: null,
-      errorMessage:''
-
+      errorMessage:'',
+      location : { cord : {} }
     };
 
-    //this._showNumber = this._showNumber.bind(this)
+
   
   _pickImage = async () => {
     //await this.getCameraRollPermission()
@@ -63,7 +55,7 @@ export default class SettingsScreen extends React.Component {
     //   }
     // });
 
-    const { userid, phone, image } = this.state;
+    const { userid, phone, image, location } = this.state;
     //console.log('user----- ', user);
     //console.log('user----- ', user.uid);
 
@@ -71,13 +63,11 @@ export default class SettingsScreen extends React.Component {
       
       firedb.ref('users/' + userid).update({
         phone,
-        picture: { data: { url: image } }
+        picture: { data: { url: image } },
+        location
       });
 
-      console.log('image--- ',image);
-      this.uploadImage(image, userid)
-        .then(()=> { alert('uploaded'); })
-        .catch(error => console.log(error))
+     
 
 
       
@@ -89,89 +79,55 @@ export default class SettingsScreen extends React.Component {
 
   }
 
-convertImgToBase64URL(url, callback, outputFormat) {
-  var img = new Image();
-  img.crossOrigin = 'Anonymous';
-  img.onload = function () {
-    var canvas = document.createElement('CANVAS'),
-      ctx = canvas.getContext('2d'), dataURL;
-    canvas.height = img.height;
-    canvas.width = img.width;
-    ctx.drawImage(img, 0, 0);
-    dataURL = canvas.toDataURL(outputFormat);
-    callback(dataURL);
-    canvas = null;
-  };
-  img.src = url;
-}
 
   _handlePhotoChoice = async pickerResult => {
     // File or Blob named mountains.jpg
-
-    console.log('pickerResult.uri ------- ',pickerResult.uri);
+    const { userid } = this.state;
+    //console.log('pickerResult.uri ------- ',pickerResult.uri);
     //var file = this.convertImgToBase64URL(pickerResult.uri);
 
-    this.convertImgToBase64URL(pickerResult.uri,(base64Img) =>{
-      console.log('base64Img', base64Img);
+    const storageRef = firebase
+      .storage()
+      .ref('photos/profile_' + userid + '.jpg');
 
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', pickerResult.uri, true);
+      xhr.send(null);
     });
 
 
-   
-    
+    const metadata = {
+      contentType: 'image/jpeg',
+    };
+
+    const url =  (downloadURL = await new Promise((resolve, reject) => {
+      try {
+        storageRef.put(blob, metadata).then(snapshot => {
+          snapshot.ref.getDownloadURL().then(downloadURL => {
+            resolve(downloadURL);
+          });
+        });
+      } catch (err) {
+        reject(err);
+      }
+    }));
+
+    url ? this.setState({
+      image : url
+    }) : ''
+    //console.log('url---- ', url);
   }
 
 
-  uploadImage(uri, uid ,  mime = 'image/jpeg') {
-
-    let fileUri = decodeURI(uri);
-    console.log('uidx-----', fileUri);
-
-    firebase
-      .storage()
-      .ref('photos/profile_' + uid + '.jpg')
-      .putFile(fileUri)
-      .then(uploadedFile => {
-        console.log("Firebase profile photo uploaded successfully")
-      })
-      .catch(error => {
-        console.log("Firebase profile upload failed: " + error)
-      })
-
-
-    // const Blob = RNFetchBlob.polyfill.Blob
-    // const fs = RNFetchBlob.fs
-    // console.log('uidx-----', uid);
-    // window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-    // window.Blob = Blob
-
-    
-    // return new Promise((resolve, reject) => {
-    //   const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
-    //   let uploadBlob = null
-    //   console.log('uploadUri-----', uploadUri);
-    //   const imageRef = firebase.storage().ref('userimages').child(uid)
-
-    //   fs.readFile(uploadUri, 'base64')
-    //     .then((data) => {
-    //       return Blob.build(data, { type: `${mime};BASE64` })
-    //     })
-    //     .then((blob) => {
-    //       uploadBlob = blob
-    //       return imageRef.put(blob, { contentType: mime })
-    //     })
-    //     .then(() => {
-    //       uploadBlob.close()
-    //       return imageRef.getDownloadURL()
-    //     })
-    //     .then((url) => {
-    //       resolve(url)
-    //     })
-    //     .catch((error) => {
-    //       reject(error)
-    //     })
-    // })
-  }
 
 
 
@@ -186,8 +142,8 @@ convertImgToBase64URL(url, callback, outputFormat) {
     }
 
     let location = await Location.getCurrentPositionAsync({});
-    this.setState({ location });
-    //console.log('location------',location);
+    this.setState({ location: { cord: location.coords } });
+    //console.log('location------', location.coords);
   };
 
 
