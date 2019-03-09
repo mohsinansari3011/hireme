@@ -44,6 +44,7 @@ export default class LoginScreen extends React.Component {
                         dataToSubmit['isblock'] = false;
                         dataToSubmit['location'] = { cord: { latitude: '24.8522706', longitude: '67.0346987' } };
                         dataToSubmit['phone'] = '';
+                        dataToSubmit['role'] = 1;
 
                         
 
