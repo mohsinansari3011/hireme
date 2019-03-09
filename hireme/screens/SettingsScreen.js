@@ -211,7 +211,7 @@ export default class SettingsScreen extends React.Component {
 
 
   renderProfile(){
-    const { profile, phone, image } = this.state;
+    const { profile, phone, image, role } = this.state;
     let radio_props = [
       { label: 'Worker', value: 0 },
       { label: 'User', value: 1 }
@@ -233,7 +233,7 @@ export default class SettingsScreen extends React.Component {
 
           <RadioForm
             radio_props={radio_props}
-            // initial={0}
+            initial={role}
             onPress={(value) => { this.setState({ role: value }) }}
           />
 
