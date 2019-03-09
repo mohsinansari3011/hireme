@@ -24,7 +24,8 @@ export default class SettingsScreen extends React.Component {
       phone: null,
       image: null,
       errorMessage:'',
-      location : { cord : {} }
+      location : { cord : {} },
+      role:'',
     };
 
 
@@ -59,15 +60,22 @@ export default class SettingsScreen extends React.Component {
     //console.log('user----- ', user);
     //console.log('user----- ', user.uid);
 
+    
     try {
-      
-      firedb.ref('users/' + userid).update({
-        phone,
-        picture: { data: { url: image } },
-        location
-      });
+      alert(image);
+      if (!image.indexOf(file) > 0) {
+        firedb.ref('users/' + userid).update({
+          phone,
+          picture: { data: { url: image } },
+          location
+        });
 
-      alert('Profile Updated Successfully');
+        alert('Profile Updated Successfully');
+      }else{
+        alert('loading.....');
+      }
+
+      
 
 
       

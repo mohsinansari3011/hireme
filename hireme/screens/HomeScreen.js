@@ -65,13 +65,16 @@ export default class HomeScreen extends React.Component {
 
   renderUsers(){
 
-    const { snap, userarr } = this.state;
+    const { user, snap, userarr } = this.state;
       snap.forEach((childSnapshot) => {
-        if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
-          //userarr.push(childSnapshot.val());
-        }else{
-          userarr.push(childSnapshot.val());
-        }
+       // if (childSnapshot.val().email !== user.email) {
+          if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
+            //userarr.push(childSnapshot.val());
+          } else {
+            userarr.push(childSnapshot.val());
+          }
+        //}
+        
         
       })
 
@@ -81,18 +84,27 @@ return(
     userarr ? userarr.map((item,i) =>{
       //console.log('item --- ',item.email);
       return(
-                <View key={i}>
-        <View>
-            <Image source={{ uri: item.picture.data.url }}
+        <View key={i} style={styles.headrow}>
+          <View style={styles.sideimage}>
+            <Image style={{borderRadius:10}} source={{ uri: item.picture.data.url }}
             style={{ width: 100, height: 100 }} />
         </View>
 
-        <View>
-            <Text> {item.name} </Text>
-        </View>
-        <View>
-            <Text> {item.phone} </Text>
-        </View>
+          <View style={styles.sideview}>
+            <View>
+              <Text style={styles.titleText}> {item.name} </Text>
+            </View>
+            <View>
+              <Text style={styles.titleText}> {item.phone} </Text>
+            </View>
+            <View>
+              <TouchableOpacity><Button
+                title="View Profile"
+                // onPress={this._pickImage}
+                color='#F5FCFF'
+              /></TouchableOpacity>
+            </View>
+          </View>
         </View>
 
       )
@@ -132,10 +144,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    
-   
     backgroundColor: '#F5FCFF',
-  }, label: {
+  }, 
+  headrow : {
+    // display:"flex",
+    borderBottomColor: '#bbb',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    backgroundColor: '#093d53',
+    borderRadius: 10,
+   
+    marginTop: 10
+  },
+  sideimage :{
+    flex: 1,
+    resizeMode: 'cover',
+    borderRadius: 30,
+    padding: 10,
+    justifyContent: 'flex-start',
+    position: 'relative'
+    
+  },
+  sideview: {
+    flex:1,
+    padding : 10,
+    justifyContent: 'flex-end',
+    position: 'absolute',
+    left: 120
+   
+  }, titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+  label: {
     fontSize: 16,
     fontWeight: 'normal',
     marginBottom: 48,
