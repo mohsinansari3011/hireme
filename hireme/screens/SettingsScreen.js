@@ -11,7 +11,7 @@ import {
 
 import { firebase, firedb } from '../config/firebase';
 import { Constants, Location, Permissions, ImagePicker } from 'expo';
-
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'Profile',
@@ -25,7 +25,7 @@ export default class SettingsScreen extends React.Component {
       image: null,
       errorMessage:'',
       location : { cord : {} },
-      role:'',
+      role:0,
     };
 
 
@@ -56,27 +56,22 @@ export default class SettingsScreen extends React.Component {
     //   }
     // });
 
-    const { userid, phone, image, location } = this.state;
+    const { userid, phone, image, location, role } = this.state;
     //console.log('user----- ', user);
     //console.log('user----- ', user.uid);
 
     
     try {
-      alert(image);
-      if (!image.indexOf(file) > 0) {
+     
         firedb.ref('users/' + userid).update({
           phone,
           picture: { data: { url: image } },
-          location
+          location,
+          role
         });
 
         alert('Profile Updated Successfully');
-      }else{
-        alert('loading.....');
-      }
-
       
-
 
       
     } catch (error) {
@@ -178,7 +173,8 @@ export default class SettingsScreen extends React.Component {
                 profile: childSnapshot.val(),
                 phone: childSnapshot.val().phone,
                 image: childSnapshot.val().picture.data.url,
-                location: childSnapshot.val().location
+                location: childSnapshot.val().location,
+                role: childSnapshot.val().role,
               })
               //alert(childSnapshot.val().email);
             });
@@ -216,7 +212,10 @@ export default class SettingsScreen extends React.Component {
 
   renderProfile(){
     const { profile, phone, image } = this.state;
-   
+    let radio_props = [
+      { label: 'Worker', value: 0 },
+      { label: 'User', value: 1 }
+    ];
     
     //alert(number);
     return (
@@ -232,6 +231,12 @@ export default class SettingsScreen extends React.Component {
             value={phone}
         />
 
+          <RadioForm
+            radio_props={radio_props}
+            // initial={0}
+            onPress={(value) => { this.setState({ role: value }) }}
+          />
+
           <Image source={{ uri: image }}
             style={{ width: 400, height: 400 }} />
 
@@ -246,7 +251,7 @@ export default class SettingsScreen extends React.Component {
     try {
       await firebase.auth().signOut();
       alert('You have Logout Successfully');
-      this.props.navigation.navigate("HomeStack");
+      //this.props.navigation.navigate("HomeStack");
       // signed out
     } catch (e) {
       // an error

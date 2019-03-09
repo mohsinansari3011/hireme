@@ -101,7 +101,7 @@ return(
               <TouchableOpacity><Button
                 title="View Profile"
                 // onPress={this._pickImage}
-                color='#4881B2'
+                color='#4881B2`'
               /></TouchableOpacity>
             </View>
           </View>
