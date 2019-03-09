@@ -63,23 +63,33 @@ export default class HomeScreen extends React.Component {
 //   console.log('shouldComponentUpdate');
 // }
 
+
+  viewprofile() {
+
+    alert('view Profile');
+  }
+
+
   renderUsers(){
 
     const { user, snap, userarr } = this.state;
       snap.forEach((childSnapshot) => {
-       // if (childSnapshot.val().email !== user.email) {
+        if (childSnapshot.val().email !== user.email) {
           if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
             //userarr.push(childSnapshot.val());
           } else {
             userarr.push(childSnapshot.val());
           }
-        //}
+        }
         
         
       })
 
       
-    
+   
+
+
+
 return(
     userarr ? userarr.map((item,i) =>{
       //console.log('item --- ',item.email);
@@ -100,7 +110,7 @@ return(
             <View>
               <TouchableOpacity><Button
                 title="View Profile"
-                // onPress={this._pickImage}
+                onPress={this.viewprofile}
                 color='#4881B2`'
               /></TouchableOpacity>
             </View>

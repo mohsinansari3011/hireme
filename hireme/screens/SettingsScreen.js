@@ -11,7 +11,10 @@ import {
 
 import { firebase, firedb } from '../config/firebase';
 import { Constants, Location, Permissions, ImagePicker } from 'expo';
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
+import RadioForm from 'react-native-simple-radio-button';
+
+import { CheckBox } from 'react-native-elements'
+
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'Profile',
@@ -207,6 +210,18 @@ export default class SettingsScreen extends React.Component {
 
 
   
+  renderCheckBoxs(){
+
+    return(
+      <CheckBox
+        center
+        title='Click Here'
+        checkedIcon='dot-circle-o'
+        uncheckedIcon='circle-o'
+        checked={this.state.role}
+      />
+    )
+  }
 
 
 
@@ -236,7 +251,7 @@ export default class SettingsScreen extends React.Component {
             initial={role}
             onPress={(value) => { this.setState({ role: value }) }}
           />
-
+          {this.renderCheckBoxs()}
           <Image source={{ uri: image }}
             style={{ width: 400, height: 400 }} />
 
