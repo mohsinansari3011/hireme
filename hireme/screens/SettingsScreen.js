@@ -210,12 +210,12 @@ export default class SettingsScreen extends React.Component {
 
 
   
-  renderCheckBoxs(){
+  // renderCheckBoxs(){
 
-    return(
+  //   return(
       
-    )
-  }
+  //   )
+  // }
 
 
 
