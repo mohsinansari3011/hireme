@@ -245,7 +245,7 @@ export default class SettingsScreen extends React.Component {
             initial={role}
             onPress={(value) => { this.setState({ role: value }) }}
           />
-          {this.renderCheckBoxs()}
+          {/* {this.renderCheckBoxs()} */}
           <Image source={{ uri: image }}
             style={{ width: 400, height: 400 }} />
 
