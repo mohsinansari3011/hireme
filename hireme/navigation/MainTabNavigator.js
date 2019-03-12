@@ -6,13 +6,10 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import LoginScreen from '../screens/LoginScreen';
+import NearByScreen from '../screens/NearByScreen';
 
 const HomeStack = createStackNavigator({
 Home: HomeScreen,
-});
-const LoginStack = createStackNavigator({
-  Login: LoginScreen,
 });
 
 HomeStack.navigationOptions = {
@@ -57,8 +54,30 @@ SettingsStack.navigationOptions = {
   ),
 };
 
+
+
+const NearByStack = createStackNavigator({
+  NearBy: NearByScreen,
+});
+
+NearByStack.navigationOptions = {
+  tabBarLabel: 'NearBy',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
+    />
+  ),
+};
+
+
 export default createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
+  NearByStack,
 });

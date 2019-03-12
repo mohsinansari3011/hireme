@@ -65,8 +65,7 @@ export default class App extends React.Component {
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
 
          
-          {this.state.isLogged ? <AppNavigator user={this.state.user} isloggedFunc={this.isloggedfunc}/> : 
-          <Login isloggedFunc={this.isloggedfunc} />}
+          {this.state.isLogged ? <AppNavigator /> : <Login isloggedFunc={this.isloggedfunc} />}
           
 
         

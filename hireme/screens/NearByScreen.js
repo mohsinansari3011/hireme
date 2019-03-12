@@ -15,24 +15,24 @@ import { firebase, firedb } from '../config/firebase';
 
 
 
-export default class LinksScreen extends React.Component {
+export default class NearByScreen extends React.Component {
 
-
+  
   static navigationOptions = {
-    title: 'Search Service Provider',
+    title: 'NearBy Service Providers',
   };
 
   state = {
     user: '',
-    snap: '',
-    userarr: []
+    snap:'',
+    userarr : []
   };
 
 
   componentWillMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
-
+      
         firedb.ref('users')
           .once('value', snap => {
 
@@ -40,14 +40,14 @@ export default class LinksScreen extends React.Component {
               user,
               snap
             })
-          })
+          }) 
       }
     })
   }
 
 
 
-  componentWillUpdate() {
+  componentWillUpdate(){
     console.log('componentWillUpdate');
   }
 
@@ -55,13 +55,13 @@ export default class LinksScreen extends React.Component {
     console.log('componentDidUpdate');
   }
 
-  componentDidMount() {
+  componentDidMount(){
     console.log('componentDidMount');
   }
 
-  // shouldComponentUpdate(){
-  //   console.log('shouldComponentUpdate');
-  // }
+// shouldComponentUpdate(){
+//   console.log('shouldComponentUpdate');
+// }
 
 
   viewprofile() {
@@ -71,85 +71,67 @@ export default class LinksScreen extends React.Component {
   }
 
 
-  renderUsers() {
+  renderUsers(){
 
     const { user, snap, userarr } = this.state;
-    snap.forEach((childSnapshot) => {
-      if (childSnapshot.val().email !== user.email) {
-        if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
-          //userarr.push(childSnapshot.val());
-        } else {
-          if (!childSnapshot.val().role) {
-            userarr.push(childSnapshot.val());
+      snap.forEach((childSnapshot) => {
+        if (childSnapshot.val().email !== user.email) {
+          if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
+            //userarr.push(childSnapshot.val());
+          } else {
+            if (!childSnapshot.val().role) {
+              userarr.push(childSnapshot.val());
+            }
+            
           }
-
         }
-      }
+        
+        
+      })
+
+      
+   
 
 
-    })
 
+return(
+    userarr ? userarr.map((item,i) =>{
+      //console.log('item --- ',item.email);
+      return(
+        <View key={i} style={styles.headrow}>
+          <View style={styles.sideimage}>
+            <Image style={{borderRadius:10}} source={{ uri: item.picture.data.url }}
+            style={{ width: 100, height: 100 }} />
+        </View>
 
-
-
-
-
-    return (
-      userarr ? userarr.map((item, i) => {
-        //console.log('item --- ',item.email);
-        return (
-          <View key={i} style={styles.headrow}>
-            <View style={styles.sideimage}>
-              <Image style={{ borderRadius: 10 }} source={{ uri: item.picture.data.url }}
-                style={{ width: 100, height: 100 }} />
+          <View style={styles.sideview}>
+            <View>
+              <Text style={styles.titleText}> {item.name} </Text>
             </View>
-
-            <View style={styles.sideview}>
-              <View>
-                <Text style={styles.titleText}> {item.name} </Text>
-              </View>
-              <View>
-                <Text style={styles.titleText}> {item.phone} </Text>
-              </View>
-              <View>
-                <TouchableOpacity><Button
-                  title="View Profile"
-                  onPress={this.viewprofile}
-                  color='#4881B2'
-                /></TouchableOpacity>
-              </View>
+            <View>
+              <Text style={styles.titleText}> {item.phone} </Text>
+            </View>
+            <View>
+              <TouchableOpacity><Button
+                title="View Profile"
+                onPress={this.viewprofile}
+                color='#4881B2'
+              /></TouchableOpacity>
             </View>
           </View>
+        </View>
 
-        )
+      )
 
-      }) : <View><Text>Loading....</Text></View>
-    )
+    }) : <View><Text>Loading....</Text></View>
+)
   }
 
 
-
-  renderSearchBar() {
-
-    return (
-      <View>
-        <Text style={{ margin: 10, fontSize: 40 }}> Search categories, location or contacts </Text>
-        <TextInput
-          keyboardType='default'
-          style={{ margin: 10, height: 40, borderColor: 'gray', borderWidth: 1 }}
-        // onChangeText={(text) => this.setState({ phone: text })}
-        // value={phone}
-        />
-      </View>
-    )
-
-
-
-  }
 
 
   render() {
-    console.log('home redner');
+    //console.log('home redner');
     const { snap } = this.state;
     return (
       <View style={styles.container}>
@@ -163,18 +145,18 @@ export default class LinksScreen extends React.Component {
             />
           </View>
 
-          {this.renderSearchBar()}
+         
 
           {snap ? this.renderUsers() : <View><Text>Loading....</Text></View>}
         </ScrollView>
 
-
+      
       </View>
     );
   }
 
 
-
+ 
 }
 
 const styles = StyleSheet.create({
@@ -182,32 +164,32 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#F5FCFF',
-  },
-  headrow: {
+  }, 
+  headrow : {
     // display:"flex",
     borderBottomColor: '#bbb',
     borderBottomWidth: StyleSheet.hairlineWidth,
     backgroundColor: '#093d53',
     borderRadius: 10,
-
+   
     marginTop: 10
   },
-  sideimage: {
+  sideimage :{
     flex: 1,
     resizeMode: 'cover',
     borderRadius: 30,
     padding: 10,
     justifyContent: 'flex-start',
     position: 'relative'
-
+    
   },
   sideview: {
-    flex: 1,
-    padding: 10,
+    flex:1,
+    padding : 10,
     justifyContent: 'flex-end',
     position: 'absolute',
     left: 120
-
+   
   }, titleText: {
     fontSize: 20,
     fontWeight: 'bold',
