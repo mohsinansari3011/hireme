@@ -160,7 +160,7 @@ export default class SettingsScreen extends React.Component {
 
   componentWillMount() {
 
-    console.log('profile props------------',this.props);
+    //console.log('profile props------------',this.props);
     let phone = null;
     let image = null;
     firebase.auth().onAuthStateChanged((user) => {

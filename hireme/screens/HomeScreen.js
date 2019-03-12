@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View, Button, TextInput,
+  View, Button, TextInput, RefreshControl,
 } from 'react-native';
 
 import { firebase, firedb } from '../config/firebase';
@@ -124,12 +124,38 @@ return(
 )
   }
 
+
+  _onRefresh = () => {
+    
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user != null) {
+
+        firedb.ref('users')
+          .once('value', snap => {
+
+            this.setState({
+              user,
+              snap
+            })
+          })
+      }
+    })
+
+    console.log('refreshed');
+  }
+
   render() {
     console.log('home redner');
     const { snap } = this.state;
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }>
           <View style={styles.welcomeContainer}>
             <Image
               source={
