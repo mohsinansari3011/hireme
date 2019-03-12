@@ -6,9 +6,10 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View, Button, TextInput,
+  View, Button, TextInput, RefreshControl  ,
 } from 'react-native';
 
+import { Constants, Location, Permissions } from 'expo';
 import { firebase, firedb } from '../config/firebase';
 
 
@@ -25,7 +26,9 @@ export default class NearByScreen extends React.Component {
   state = {
     user: '',
     snap:'',
-    userarr : []
+    userarr : [],
+    location: { cord: {} },
+    refreshing: false,
   };
 
 
@@ -43,6 +46,16 @@ export default class NearByScreen extends React.Component {
           }) 
       }
     })
+
+
+
+    if (Platform.OS === 'android' && !Constants.isDevice) {
+      this.setState({
+        errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
+      });
+    } else {
+      this._getLocationAsync();
+    }
   }
 
 
@@ -71,13 +84,46 @@ export default class NearByScreen extends React.Component {
   }
 
 
+
+  getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  let R = 6371; // Radius of the earth in km
+    let dLat = this.deg2rad(lat2 - lat1);  // deg2rad below
+    let dLon = this.deg2rad(lon2 - lon1);
+    let a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    ;
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    let d = R * c; // Distance in km
+  return d;
+}
+
+deg2rad(deg) {
+  return deg * (Math.PI / 180)
+}
+
+
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    this.setState({ location: { cord: location.coords } });
+    console.log('location------', location.coords);
+  };
+
+
   renderUsers(){
 
     const { user, snap, userarr } = this.state;
       snap.forEach((childSnapshot) => {
         if (childSnapshot.val().email !== user.email) {
           if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
-            //userarr.push(childSnapshot.val());
           } else {
             if (!childSnapshot.val().role) {
               userarr.push(childSnapshot.val());
@@ -87,10 +133,12 @@ export default class NearByScreen extends React.Component {
         }
         
         
+        
       })
 
-      
-   
+    //console.log(user);
+    //console.log('user lat-- ', user.location.cord.latitude);
+    //console.log('user long-- ', user.location.cord.longitude);
 
 
 
@@ -129,13 +177,30 @@ return(
 
 
 
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    if (Platform.OS === 'android' && !Constants.isDevice) {
+      this.setState({
+        errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
+      });
+    } else {
+      this._getLocationAsync();
+    }
+  }
+
 
   render() {
     //console.log('home redner');
     const { snap } = this.state;
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }>
           <View style={styles.welcomeContainer}>
             <Image
               source={

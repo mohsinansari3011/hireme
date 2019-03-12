@@ -76,8 +76,9 @@ NearByStack.navigationOptions = {
 
 
 export default createBottomTabNavigator({
+  
   HomeStack,
   LinksStack,
-  SettingsStack,
   NearByStack,
+  SettingsStack,
 });
