@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View, Button, TextInput, CheckBox 
+  View, Button, TextInput, CheckBox
 } from 'react-native';
 
 import { firebase, firedb } from '../config/firebase';
@@ -21,19 +21,19 @@ export default class SettingsScreen extends React.Component {
   };
 
 
-    state = {
-      user: null,
-      profile: null,
-      phone: null,
-      image: null,
-      errorMessage:'',
-      location : { cord : {} },
-      role:0,
-      checkBoxChecked: [],
-    };
+  state = {
+    user: null,
+    profile: null,
+    phone: null,
+    image: null,
+    errorMessage: '',
+    location: { cord: {} },
+    role: 0,
+    checkBoxChecked: [],
+  };
 
 
-  
+
   _pickImage = async () => {
     //await this.getCameraRollPermission()
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -64,24 +64,24 @@ export default class SettingsScreen extends React.Component {
     //console.log('user----- ', user);
     //console.log('user----- ', user.uid);
 
-    
+
     try {
-     
-        firedb.ref('users/' + userid).update({
-          phone,
-          picture: { data: { url: image } },
-          location,
-          role
-        });
 
-        alert('Profile Updated Successfully');
-      
+      firedb.ref('users/' + userid).update({
+        phone,
+        picture: { data: { url: image } },
+        location,
+        role
+      });
 
-      
+      alert('Profile Updated Successfully');
+
+
+
     } catch (error) {
-      
+
     }
-   
+
 
 
   }
@@ -122,7 +122,7 @@ export default class SettingsScreen extends React.Component {
           snapshot.ref.getDownloadURL().then(downloadURL => {
             this.setState({
               image: downloadURL
-            })  
+            })
 
             resolve(downloadURL);
           });
@@ -132,7 +132,7 @@ export default class SettingsScreen extends React.Component {
       }
     }));
 
-   
+
     //console.log('url---- ', url);
   }
 
@@ -171,7 +171,7 @@ export default class SettingsScreen extends React.Component {
             //console.log('childSnapshot.val()  ', snap.doc().id)
             snap.forEach((childSnapshot) => {
               //console.log('childSnapshot.val()  ', childSnapshot.val())
-             
+
               this.setState({
                 userid,
                 profile: childSnapshot.val(),
@@ -184,7 +184,7 @@ export default class SettingsScreen extends React.Component {
             });
 
 
-            
+
 
           });
 
@@ -212,6 +212,8 @@ export default class SettingsScreen extends React.Component {
 
   checkBoxChanged(id, value) {
 
+    alert(value);
+    alert(id);
     this.setState({
       checkBoxChecked: tempCheckValues
     })
@@ -223,13 +225,14 @@ export default class SettingsScreen extends React.Component {
       checkBoxChecked: tempCheckBoxChecked
     })
 
+    console.log(this.state.checkBoxChecked);
   }
-  renderCheckBoxs(){
+  renderCheckBoxs() {
 
-    const products = [ {id: 1, services:"carpenter"},
-      { id: 2, services: "electrition" },
-      { id: 3, services: "plumber" },
-      { id: 4, services: "painter" },];
+    const products = [{ id: 1, services: "carpenter" },
+    { id: 2, services: "electrition" },
+    { id: 3, services: "plumber" },
+    { id: 4, services: "painter" },];
 
     return (
 
@@ -239,13 +242,14 @@ export default class SettingsScreen extends React.Component {
 
         return (
 
-          <View key={val.id} style={{ flexDirection: 'column' }}>
+          <View key={val.id} style={{ flexDirection: 'row' }}>
 
             <CheckBox
+              color='red'
               value={this.state.checkBoxChecked[val.id]}
               onValueChange={() => this.checkBoxChanged(val.id, this.state.checkBoxChecked[val.id])}
-            /> <Text>{val.services}</Text> 
-
+            />
+            <Text style={{ marginTop: 2 }}> {val.services} </Text>
           </View >
 
         )
@@ -256,42 +260,48 @@ export default class SettingsScreen extends React.Component {
 
     );
   }
-  
 
 
 
-  renderProfile(){
+
+  renderProfile() {
     const { profile, phone, image, role } = this.state;
     let radio_props = [
       { label: 'Worker', value: 0 },
       { label: 'User', value: 1 }
     ];
-    
+
     //alert(number);
     return (
       profile ?
-        <View><Text> Hello {profile.name} </Text>
+        <View>
+          
+          <Image source={{ uri: image }}
+            style={{ width: 400, height: 400 }} />
+
+          <Text> Hello {profile.name} </Text>
           <Text>Email : {profile.email}</Text>
-        <Text>Phone : </Text>
-        <TextInput
+          <Text>Phone : </Text>
+          <TextInput
             keyboardType='numeric'
             maxLength={11}
             style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-            onChangeText={(text) => this.setState({ phone:text })}
+            onChangeText={(text) => this.setState({ phone: text })}
             value={phone}
-        />
+          />
 
           <RadioForm
             radio_props={radio_props}
             initial={role}
             onPress={(value) => { this.setState({ role: value }) }}
           />
-          {this.renderCheckBoxs()}
-          <Image source={{ uri: image }}
-            style={{ width: 400, height: 400 }} />
 
-       </View> : <Text> Loading... </Text>
-      
+          {this.renderCheckBoxs()}
+
+          
+
+        </View> : <Text> Loading... </Text>
+
     )
   }
 
@@ -305,7 +315,7 @@ export default class SettingsScreen extends React.Component {
       // signed out
     } catch (e) {
       // an error
-    } 
+    }
 
 
   }
@@ -321,14 +331,14 @@ export default class SettingsScreen extends React.Component {
       <View style={styles.container}>
         <Text style={styles.label}>Update Your Profile!!</Text>
 
-        
-<TouchableOpacity><Button
+
+        <TouchableOpacity><Button
           title="Pick an image from camera roll"
           onPress={this._pickImage}
           color='#093d53'
-          /></TouchableOpacity>
-     
-        
+        /></TouchableOpacity>
+
+
         <ScrollView>{this.renderProfile()}</ScrollView>
 
 
@@ -391,20 +401,20 @@ const styles = StyleSheet.create({
 
 
     backgroundColor: '#F5FCFF',
-  }, 
-  button :{
-    width:250,
-    height:50,
-    backgroundColor: '#F5FCFF',
-    borderRadius : 30,
-    justifyContent : 'center',
-    marginTop : 15
   },
-  text :{
-    color : 'white',
-    fontSize : 18,
+  button: {
+    width: 250,
+    height: 50,
+    backgroundColor: '#F5FCFF',
+    borderRadius: 30,
+    justifyContent: 'center',
+    marginTop: 15
+  },
+  text: {
+    color: 'white',
+    fontSize: 18,
     textAlign: 'center',
-    backgroundColor:"#841584"
+    backgroundColor: "#841584"
   },
   label: {
     fontSize: 16,
