@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View, Button, TextInput,
+  View, Button, TextInput, CheckBox 
 } from 'react-native';
 
 import { firebase, firedb } from '../config/firebase';
@@ -29,6 +29,7 @@ export default class SettingsScreen extends React.Component {
       errorMessage:'',
       location : { cord : {} },
       role:0,
+      checkBoxChecked: [],
     };
 
 
@@ -209,13 +210,61 @@ export default class SettingsScreen extends React.Component {
   }
 
 
-  
-  // renderCheckBoxs(){
+  checkBoxChanged(id, value) {
 
-  //   return(
-      
-  //   )
-  // }
+    this.setState({
+      checkBoxChecked: tempCheckValues
+    })
+
+    var tempCheckBoxChecked = this.state.checkBoxChecked;
+    tempCheckBoxChecked[id] = !value;
+
+    this.setState({
+      checkBoxChecked: tempCheckBoxChecked
+    })
+
+  }
+  renderCheckBoxs(){
+
+    const products = [{
+      id: 1
+    },
+    {
+      id: 2
+    },
+    {
+      id: 3
+    }];
+
+    return (
+
+      products.map((val) => {
+
+        { tempCheckValues[val.id] = false }
+
+        return (
+
+          <View key={val.id} style={{ flexDirection: 'column' }}>
+
+            <CheckBox
+
+              value={this.state.checkBoxChecked[val.id]}
+
+              onValueChange={() => this.checkBoxChanged(val.id, this.state.checkBoxChecked[val.id])}
+
+            />
+
+          </View >
+
+        )
+
+      }
+
+      )
+
+    );
+  }
+  
 
 
 
@@ -245,7 +294,7 @@ export default class SettingsScreen extends React.Component {
             initial={role}
             onPress={(value) => { this.setState({ role: value }) }}
           />
-          {/* {this.renderCheckBoxs()} */}
+          {this.renderCheckBoxs()}
           <Image source={{ uri: image }}
             style={{ width: 400, height: 400 }} />
 
