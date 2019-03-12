@@ -29,7 +29,7 @@ export default class SettingsScreen extends React.Component {
     errorMessage: '',
     location: { cord: {} },
     role: 0,
-    checkBoxChecked: [],
+    services: [],
   };
 
 
@@ -179,6 +179,7 @@ export default class SettingsScreen extends React.Component {
                 image: childSnapshot.val().picture.data.url,
                 location: childSnapshot.val().location,
                 role: childSnapshot.val().role,
+                services: childSnapshot.val().services,
               })
               //alert(childSnapshot.val().email);
             });
@@ -212,42 +213,35 @@ export default class SettingsScreen extends React.Component {
 
   checkBoxChanged(id, value) {
 
-    alert(value);
-    alert(id);
-    this.setState({
-      checkBoxChecked: tempCheckValues
-    })
+    // alert(value);
+    // alert(id);
+    // this.setState({
+    //   checkBoxChecked: tempCheckValues
+    // })
 
-    var tempCheckBoxChecked = this.state.checkBoxChecked;
-    tempCheckBoxChecked[id] = !value;
+    // var tempCheckBoxChecked = this.state.checkBoxChecked;
+    // tempCheckBoxChecked[id] = !value;
 
-    this.setState({
-      checkBoxChecked: tempCheckBoxChecked
-    })
+    // this.setState({
+    //   checkBoxChecked: tempCheckBoxChecked
+    // })
 
-    console.log(this.state.checkBoxChecked);
+    //console.log(this.state.checkBoxChecked);
   }
   renderCheckBoxs() {
 
-    const products = [{ id: 1, services: "carpenter" },
-    { id: 2, services: "electrition" },
-    { id: 3, services: "plumber" },
-    { id: 4, services: "painter" },];
-
+    const { services } = this.state;
+    console.log(services[0].service);
     return (
 
-      products.map((val) => {
-
-        { tempCheckValues[val.id] = false }
-
+      services.map((val) => {
         return (
 
           <View key={val.id} style={{ flexDirection: 'row' }}>
 
             <CheckBox
-              color='red'
-              value={this.state.checkBoxChecked[val.id]}
-              onValueChange={() => this.checkBoxChanged(val.id, this.state.checkBoxChecked[val.id])}
+              value={val.checked}
+              onValueChange={() => this.checkBoxChanged(val.id, val.services)}
             />
             <Text style={{ marginTop: 2 }}> {val.services} </Text>
           </View >
@@ -265,7 +259,7 @@ export default class SettingsScreen extends React.Component {
 
 
   renderProfile() {
-    const { profile, phone, image, role } = this.state;
+    const { profile, phone, image, role, services } = this.state;
     let radio_props = [
       { label: 'Worker', value: 0 },
       { label: 'User', value: 1 }
@@ -279,7 +273,7 @@ export default class SettingsScreen extends React.Component {
           <Image source={{ uri: image }}
             style={{ width: 400, height: 400 }} />
 
-          <Text> Hello {profile.name} </Text>
+          <Text>Hello   {profile.name} </Text>
           <Text>Email : {profile.email}</Text>
           <Text>Phone : </Text>
           <TextInput
@@ -296,7 +290,7 @@ export default class SettingsScreen extends React.Component {
             onPress={(value) => { this.setState({ role: value }) }}
           />
 
-          {this.renderCheckBoxs()}
+          {services ? this.renderCheckBoxs() : <Text>  </Text>}
 
           
 

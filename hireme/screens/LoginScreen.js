@@ -45,8 +45,11 @@ export default class LoginScreen extends React.Component {
                         dataToSubmit['location'] = { cord: { latitude: '24.8522706', longitude: '67.0346987' } };
                         dataToSubmit['phone'] = '';
                         dataToSubmit['role'] = 1;
-
-                        
+                        const services = [{ id: 1, service: "carpenter" , checked:false },
+                            { id: 2, service: "electrition", checked: false },
+                            { id: 3, service: "plumber", checked: false},
+                            { id: 4, service: "painter", checked: false},];
+                        dataToSubmit['services'] = services;
 
                        
 

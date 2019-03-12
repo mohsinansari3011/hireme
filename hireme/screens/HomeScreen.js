@@ -111,7 +111,7 @@ return(
               <TouchableOpacity><Button
                 title="View Profile"
                 onPress={this.viewprofile}
-                color='#4881B2`'
+                color='#4881B2'
               /></TouchableOpacity>
             </View>
           </View>
