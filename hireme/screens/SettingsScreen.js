@@ -14,7 +14,7 @@ import { Constants, Location, Permissions, ImagePicker } from 'expo';
 import RadioForm from 'react-native-simple-radio-button';
 
 
-
+var tempCheckValues = [];
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'Profile',
@@ -226,15 +226,10 @@ export default class SettingsScreen extends React.Component {
   }
   renderCheckBoxs(){
 
-    const products = [{
-      id: 1
-    },
-    {
-      id: 2
-    },
-    {
-      id: 3
-    }];
+    const products = [ {id: 1, services:"carpenter"},
+      { id: 2, services: "electrition" },
+      { id: 3, services: "plumber" },
+      { id: 4, services: "painter" },];
 
     return (
 
@@ -247,12 +242,9 @@ export default class SettingsScreen extends React.Component {
           <View key={val.id} style={{ flexDirection: 'column' }}>
 
             <CheckBox
-
               value={this.state.checkBoxChecked[val.id]}
-
               onValueChange={() => this.checkBoxChanged(val.id, this.state.checkBoxChecked[val.id])}
-
-            />
+            /> <Text>{val.services}</Text> 
 
           </View >
 
