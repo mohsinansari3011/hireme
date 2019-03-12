@@ -60,7 +60,7 @@ export default class SettingsScreen extends React.Component {
     //   }
     // });
 
-    const { userid, phone, image, location, role } = this.state;
+    const { userid, phone, image, location, role, services } = this.state;
     //console.log('user----- ', user);
     //console.log('user----- ', user.uid);
 
@@ -71,7 +71,8 @@ export default class SettingsScreen extends React.Component {
         phone,
         picture: { data: { url: image } },
         location,
-        role
+        role,
+        services
       });
 
       alert('Profile Updated Successfully');
@@ -212,8 +213,14 @@ export default class SettingsScreen extends React.Component {
 
 
   checkBoxChanged(id, value) {
+    
+    const { services } = this.state;
+    services[id].checked = !value;
 
-    // alert(value);
+    this.setState({
+      services
+
+    })
     // alert(id);
     // this.setState({
     //   checkBoxChecked: tempCheckValues
@@ -231,19 +238,19 @@ export default class SettingsScreen extends React.Component {
   renderCheckBoxs() {
 
     const { services } = this.state;
-    console.log(services[0].service);
+    //console.log(services[0].service);
     return (
 
-      services.map((val) => {
+      services.map((val,i) => {
         return (
 
           <View key={val.id} style={{ flexDirection: 'row' }}>
 
             <CheckBox
               value={val.checked}
-              onValueChange={() => this.checkBoxChanged(val.id, val.services)}
+              onValueChange={() => this.checkBoxChanged(i, val.checked)}
             />
-            <Text style={{ marginTop: 2 }}> {val.services} </Text>
+            <Text style={{ marginTop: 2 }}> {val.service} </Text>
           </View >
 
         )
