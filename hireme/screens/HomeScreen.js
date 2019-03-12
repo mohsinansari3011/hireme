@@ -67,6 +67,7 @@ export default class HomeScreen extends React.Component {
   viewprofile() {
 
     alert('view Profile');
+    this.props.navigation.navigate('LoginStack');
   }
 
 

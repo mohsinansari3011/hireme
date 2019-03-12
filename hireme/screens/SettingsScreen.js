@@ -14,7 +14,7 @@ import { Constants, Location, Permissions, ImagePicker } from 'expo';
 import RadioForm from 'react-native-simple-radio-button';
 
 
-var tempCheckValues = [];
+
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'Profile',
@@ -160,6 +160,7 @@ export default class SettingsScreen extends React.Component {
 
   componentWillMount() {
 
+    console.log('profile props------------',this.props);
     let phone = null;
     let image = null;
     firebase.auth().onAuthStateChanged((user) => {
@@ -221,19 +222,7 @@ export default class SettingsScreen extends React.Component {
       services
 
     })
-    // alert(id);
-    // this.setState({
-    //   checkBoxChecked: tempCheckValues
-    // })
-
-    // var tempCheckBoxChecked = this.state.checkBoxChecked;
-    // tempCheckBoxChecked[id] = !value;
-
-    // this.setState({
-    //   checkBoxChecked: tempCheckBoxChecked
-    // })
-
-    //console.log(this.state.checkBoxChecked);
+    
   }
   renderCheckBoxs() {
 
@@ -330,13 +319,11 @@ export default class SettingsScreen extends React.Component {
     //alert(this.state.user); 
     return (
       <View style={styles.container}>
-        <Text style={styles.label}>Update Your Profile!!</Text>
-
-
         <TouchableOpacity><Button
           title="Pick an image from camera roll"
           onPress={this._pickImage}
           color='#093d53'
+          style={{ marginTop:10}}
         /></TouchableOpacity>
 
 
@@ -378,7 +365,7 @@ export default class SettingsScreen extends React.Component {
               source={
                 require('../assets/images/hireme.png')
               }
-              style={styles.welcomeImage}
+               style={styles.welcomeImage}
             />
           </View>
 
@@ -438,14 +425,14 @@ const styles = StyleSheet.create({
   },
   welcomeContainer: {
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+    marginTop: 2,
+    marginBottom: 2,
   },
   welcomeImage: {
     width: 100,
     height: 80,
     resizeMode: 'contain',
-    marginTop: 3,
+    marginTop: 0,
     marginLeft: -10,
   }, FbImage: {
     flex: 1,
