@@ -29,6 +29,11 @@ export default class HomeScreen extends React.Component {
   };
 
 
+
+
+  
+
+
   componentWillMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
@@ -47,22 +52,6 @@ export default class HomeScreen extends React.Component {
 
 
 
-  componentWillUpdate(){
-    console.log('componentWillUpdate');
-  }
-
-  componentDidUpdate() {
-    console.log('componentDidUpdate');
-  }
-
-  componentDidMount(){
-    console.log('componentDidMount');
-  }
-
-// shouldComponentUpdate(){
-//   console.log('shouldComponentUpdate');
-// }
-
 
   viewprofile() {
 
@@ -73,7 +62,8 @@ export default class HomeScreen extends React.Component {
 
   renderUsers(){
 
-    const { user, snap, userarr } = this.state;
+    const { user, snap } = this.state;
+    const userarr = [];
       snap.forEach((childSnapshot) => {
         if (childSnapshot.val().email !== user.email) {
           if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {

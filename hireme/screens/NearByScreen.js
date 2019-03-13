@@ -34,6 +34,21 @@ export default class NearByScreen extends React.Component {
   };
 
 
+
+  fetchuser(){
+
+    firedb.ref('users')
+      .once('value', snap => {
+
+        this.setState({
+          snap
+        })
+      })
+
+  }
+
+
+
   componentWillMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
@@ -61,24 +76,6 @@ export default class NearByScreen extends React.Component {
   }
 
 
-
-  componentWillUpdate(){
-    console.log('componentWillUpdate');
-  }
-
-  componentDidUpdate() {
-    console.log('componentDidUpdate');
-  }
-
-  componentDidMount(){
-    console.log('componentDidMount');
-  }
-
-// shouldComponentUpdate(){
-//   console.log('shouldComponentUpdate');
-// }
-
-
   viewprofile() {
 
     Alert.alert('view Profile');
@@ -93,7 +90,7 @@ export default class NearByScreen extends React.Component {
     let dLon = this.deg2rad(lon2 - lon1);
     let a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
     Math.sin(dLon / 2) * Math.sin(dLon / 2)
     ;
     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
@@ -124,7 +121,8 @@ deg2rad(deg) {
 
   renderUsers(){
 
-    const { user, snap, userarr } = this.state;
+    const { user, snap, location } = this.state;
+    const userarr= [];
       snap.forEach((childSnapshot) => {
         if (childSnapshot.val().email !== user.email) {
           if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
@@ -140,6 +138,7 @@ deg2rad(deg) {
         
       })
 
+    //console.log(location.coords);
     //console.log(user);
     //console.log('user lat-- ', user.location.cord.latitude);
     //console.log('user long-- ', user.location.cord.longitude);
@@ -149,32 +148,40 @@ deg2rad(deg) {
 return(
     userarr ? userarr.map((item,i) =>{
       //console.log('item --- ',item.email);
-      return(
-        <TouchableOpacity onPress={this.viewprofile}>
-        <View key={i} style={styles.headrow}>
-          <View style={styles.sideimage}>
-            <Image style={{borderRadius:10}} source={{ uri: item.picture.data.url }}
-            style={{ width: 100, height: 100 }} />
-        </View>
 
-          <View style={styles.sideview}>
-            <View>
-              <Text style={styles.titleText}> {item.name} </Text>
-            </View>
-            <View>
-              <Text style={styles.titleText}> {item.phone} </Text>
-            </View>
-            {/* <View>
+      let km = Math.ceil(this.getDistanceFromLatLonInKm(location.coords.latitude, location.coords.longitude, item.location.cord.latitude, item.location.cord.longitude));
+      if (km<10) {
+        return (
+          <TouchableOpacity key={i} onPress={this.viewprofile}>
+            <View style={styles.headrow}>
+              <View style={styles.sideimage}>
+                <Image style={{ borderRadius: 10 }} source={{ uri: item.picture.data.url }}
+                  style={{ width: 100, height: 100 }} />
+              </View>
+
+              <View style={styles.sideview}>
+                <View>
+                  <Text style={styles.titleText}> {item.name} </Text>
+                </View>
+                <View>
+                  <Text style={styles.titleText}> {item.phone} </Text>
+                </View>
+                <View>
+                  <Text style={styles.titleText}> {km} KM Away! </Text>
+                </View>
+                {/* <View>
               <TouchableOpacity><Button
                 title="View Profile"
                 onPress={this.viewprofile}
                 color='#4881B2'
               /></TouchableOpacity>
             </View> */}
-          </View>
-        </View>
-        </TouchableOpacity>
-      )
+              </View>
+            </View>
+          </TouchableOpacity>
+        )
+      }
+      
 
     }) : <View><Text>Loading....</Text></View>
 )
@@ -183,22 +190,31 @@ return(
 
 
   _onRefresh = () => {
-    this.setState({ refreshing: true });
-    if (Platform.OS === 'android' && !Constants.isDevice) {
-      this.setState({
-        errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
-      });
-    } else {
-      this.findCoordinates();
+    
+
+    if (!this.state.location) {
+      this.setState({ refreshing: true });
+      if (Platform.OS === 'android' && !Constants.isDevice) {
+        this.setState({
+          errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
+        });
+      } else {
+        this.findCoordinates();
+      }
     }
+
+    //relaod the users
+    this.fetchuser();
+    
   }
 
 
   findCoordinates = () => {
     navigator.geolocation.getCurrentPosition(
       position => {
-        const location = JSON.stringify(position);
-
+        //console.log('position ---', position);
+        //const location = JSON.stringify(position);
+        const location = position;
         this.setState({ location , refreshing:false });
         //console.log(location);
       },
