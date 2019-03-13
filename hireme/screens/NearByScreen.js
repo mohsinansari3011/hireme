@@ -28,7 +28,7 @@ export default class NearByScreen extends React.Component {
     user: '',
     snap:'',
     userarr : [],
-    location: { cord: {} },
+    location: null,
     refreshing: false,
     locate : null
   };
@@ -56,7 +56,7 @@ export default class NearByScreen extends React.Component {
         errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
       });
     } else {
-      this._getLocationAsync();
+      this.findCoordinates();
     }
   }
 
@@ -106,20 +106,20 @@ deg2rad(deg) {
 }
 
 
-  _getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== 'granted') {
-      alert('Permission to access location was denied');
-      this.setState({
-        errorMessage: 'Permission to access location was denied',
-        refreshing: false
-      });
-    }
+  // _getLocationAsync = async () => {
+  //   let { status } = await Permissions.askAsync(Permissions.LOCATION);
+  //   if (status !== 'granted') {
+  //     alert('Permission to access location was denied');
+  //     this.setState({
+  //       errorMessage: 'Permission to access location was denied',
+  //       refreshing: false
+  //     });
+  //   }
 
-    let location = await Location.getCurrentPositionAsync({});
-    this.setState({ location: { cord: location.coords }, refreshing: false });
-    //console.log('location------', location.coords);
-  };
+  //   let location = await Location.getCurrentPositionAsync({});
+  //   this.setState({ location: { cord: location.coords }, refreshing: false });
+  //   //console.log('location------', location.coords);
+  // };
 
 
   renderUsers(){
@@ -189,25 +189,30 @@ return(
         errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
       });
     } else {
-      this._getLocationAsync();
+      this.findCoordinates();
     }
   }
+
+
   findCoordinates = () => {
     navigator.geolocation.getCurrentPosition(
       position => {
-        const locate = JSON.stringify(position);
+        const location = JSON.stringify(position);
 
-        this.setState({ locate });
-        console.log(locate);
+        this.setState({ location , refreshing:false });
+        //console.log(location);
       },
-      error => alert(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      error => Alert.alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000  } ,
+      this.setState({ refreshing: false })
+
+      
     );
   };
 
   render() {
     //console.log('home redner');
-    const { snap } = this.state;
+    const { snap, location } = this.state;
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
@@ -226,14 +231,8 @@ return(
             />
           </View>
 
-         
-          <TouchableOpacity onPress={this.findCoordinates}>
-            <Text>Find My Coords?</Text>
-            <Text>Location: {this.state.locate}</Text>
-          </TouchableOpacity>
 
-
-          {snap ? this.renderUsers() : <View><Text>Loading....</Text></View>}
+          {snap && location ? this.renderUsers() : <View><Text>Loading....</Text></View>}
         </ScrollView>
 
       
