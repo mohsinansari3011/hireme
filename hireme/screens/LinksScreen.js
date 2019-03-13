@@ -98,6 +98,8 @@ export default class LinksScreen extends React.Component {
       userarr ? userarr.map((item, i) => {
         //console.log('item --- ',item.email);
         return (
+
+          <TouchableOpacity onPress={this.viewprofile}>
           <View key={i} style={styles.headrow}>
             <View style={styles.sideimage}>
               <Image style={{ borderRadius: 10 }} source={{ uri: item.picture.data.url }}
@@ -111,16 +113,16 @@ export default class LinksScreen extends React.Component {
               <View>
                 <Text style={styles.titleText}> {item.phone} </Text>
               </View>
-              <View>
+              {/* <View>
                 <TouchableOpacity><Button
                   title="View Profile"
                   onPress={this.viewprofile}
                   color='#4881B2'
                 /></TouchableOpacity>
-              </View>
+              </View> */}
             </View>
           </View>
-
+          </TouchableOpacity>
         )
 
       }) : <View><Text>Loading....</Text></View>

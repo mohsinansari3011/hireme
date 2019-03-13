@@ -29,6 +29,7 @@ export default class NearByScreen extends React.Component {
     userarr : [],
     location: { cord: {} },
     refreshing: false,
+    locate : null
   };
 
 
@@ -107,13 +108,15 @@ deg2rad(deg) {
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
+      alert('Permission to access location was denied');
       this.setState({
         errorMessage: 'Permission to access location was denied',
+        refreshing: false
       });
     }
 
     let location = await Location.getCurrentPositionAsync({});
-    this.setState({ location: { cord: location.coords } });
+    this.setState({ location: { cord: location.coords }, refreshing: false });
     console.log('location------', location.coords);
   };
 
@@ -146,6 +149,7 @@ return(
     userarr ? userarr.map((item,i) =>{
       //console.log('item --- ',item.email);
       return(
+        <TouchableOpacity onPress={this.viewprofile}>
         <View key={i} style={styles.headrow}>
           <View style={styles.sideimage}>
             <Image style={{borderRadius:10}} source={{ uri: item.picture.data.url }}
@@ -159,16 +163,16 @@ return(
             <View>
               <Text style={styles.titleText}> {item.phone} </Text>
             </View>
-            <View>
+            {/* <View>
               <TouchableOpacity><Button
                 title="View Profile"
                 onPress={this.viewprofile}
                 color='#4881B2'
               /></TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </View>
-
+        </TouchableOpacity>
       )
 
     }) : <View><Text>Loading....</Text></View>
@@ -187,7 +191,18 @@ return(
       this._getLocationAsync();
     }
   }
+  findCoordinates = () => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const locate = JSON.stringify(position);
 
+        this.setState({ locate });
+        console.log(locate);
+      },
+      error => alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  };
 
   render() {
     //console.log('home redner');
@@ -211,6 +226,11 @@ return(
           </View>
 
          
+          <TouchableOpacity onPress={this.findCoordinates}>
+            <Text>Find My Coords?</Text>
+            <Text>Location: {this.state.location}</Text>
+          </TouchableOpacity>
+
 
           {snap ? this.renderUsers() : <View><Text>Loading....</Text></View>}
         </ScrollView>
