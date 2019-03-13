@@ -25,7 +25,8 @@ export default class LinksScreen extends React.Component {
   state = {
     user: '',
     snap: '',
-    userarr: []
+    userarr: [],
+    searchtext :'',
   };
 
 
@@ -44,24 +45,6 @@ export default class LinksScreen extends React.Component {
       }
     })
   }
-
-
-
-  componentWillUpdate() {
-    console.log('componentWillUpdate');
-  }
-
-  componentDidUpdate() {
-    console.log('componentDidUpdate');
-  }
-
-  componentDidMount() {
-    console.log('componentDidMount');
-  }
-
-  // shouldComponentUpdate(){
-  //   console.log('shouldComponentUpdate');
-  // }
 
 
   viewprofile() {
@@ -96,7 +79,6 @@ export default class LinksScreen extends React.Component {
 
     return (
       userarr ? userarr.map((item, i) => {
-        //console.log('item --- ',item.email);
         return (
 
           <TouchableOpacity onPress={this.viewprofile}>
@@ -130,17 +112,27 @@ export default class LinksScreen extends React.Component {
   }
 
 
+_usersearch(){
+
+
+}
+
+
+
+
 
   renderSearchBar() {
 
+    const { searchtext } = this.state;
+
     return (
       <View>
-        <Text style={{ margin: 10, fontSize: 40 }}> Search categories, location or contacts </Text>
+        <Text style={{ margin: 10, fontSize: 20 }}> Search categories, location or contacts </Text>
         <TextInput
           keyboardType='default'
           style={{ margin: 10, height: 40, borderColor: 'gray', borderWidth: 1 }}
-        // onChangeText={(text) => this.setState({ phone: text })}
-        // value={phone}
+          onChangeText={this._usersearch}
+          value={searchtext}
         />
       </View>
     )
@@ -151,7 +143,7 @@ export default class LinksScreen extends React.Component {
 
 
   render() {
-    console.log('home redner');
+    
     const { snap } = this.state;
     return (
       <View style={styles.container}>

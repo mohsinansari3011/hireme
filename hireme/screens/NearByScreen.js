@@ -183,7 +183,7 @@ return(
       }
       
 
-    }) : <View><Text>Loading....</Text></View>
+    }) : <View><Text>Turn on Location and reload....</Text></View>
 )
   }
 

@@ -133,11 +133,11 @@ return(
       }
     })
 
-    console.log('refreshed');
+    
   }
 
   render() {
-    console.log('home redner');
+    
     const { snap } = this.state;
     return (
       <View style={styles.container}>
