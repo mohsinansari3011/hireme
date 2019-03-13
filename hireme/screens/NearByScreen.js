@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  Alert,
   TouchableOpacity,
   View, Button, TextInput, RefreshControl  ,
 } from 'react-native';
@@ -80,7 +81,7 @@ export default class NearByScreen extends React.Component {
 
   viewprofile() {
 
-    alert('view Profile');
+    Alert.alert('view Profile');
     //this.props.navigation.navigate('Login');
   }
 
@@ -117,7 +118,7 @@ deg2rad(deg) {
 
     let location = await Location.getCurrentPositionAsync({});
     this.setState({ location: { cord: location.coords }, refreshing: false });
-    console.log('location------', location.coords);
+    //console.log('location------', location.coords);
   };
 
 
@@ -228,7 +229,7 @@ return(
          
           <TouchableOpacity onPress={this.findCoordinates}>
             <Text>Find My Coords?</Text>
-            <Text>Location: {this.state.location}</Text>
+            <Text>Location: {this.state.locate}</Text>
           </TouchableOpacity>
 
 
