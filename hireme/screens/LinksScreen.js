@@ -114,7 +114,14 @@ export default class LinksScreen extends React.Component {
 
 _usersearch(){
 
+firedb.ref('users')
+          .once('value', snap => {
 
+            this.setState({
+              user,
+              snap
+            })
+          })
 }
 
 
