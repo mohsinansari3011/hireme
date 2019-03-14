@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import { firebase, firedb } from '../config/firebase';
+import console = require('console');
 
 
 
@@ -114,9 +115,10 @@ export default class LinksScreen extends React.Component {
 
 _usersearch(){
 
-  firedb.ref('users').orderByChild('').equalTo()
+  firedb.ref('users').where("services", "array-contains", "carpenter")
     .once('value', snap => {
 
+      console.log(snap);
       this.setState({
         user,
         snap
