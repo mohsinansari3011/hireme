@@ -118,7 +118,7 @@ _usersearch(){
   firedb.ref('users').where("services", "array-contains", "carpenter")
     .once('value', snap => {
 
-      console.log(snap);
+      
       this.setState({
         user,
         snap
