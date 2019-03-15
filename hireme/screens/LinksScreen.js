@@ -115,8 +115,7 @@ export default class LinksScreen extends React.Component {
 
 _usersearch(){
 
-  firedb.ref('users').where("services", "array-contains", "carpenter")
-    .once('value', snap => {
+  firedb.ref('users').orderBy("services").equalTo("carpenter").once('value', snap => {
 
       snap.forEach((childSnapshot) => {
 
