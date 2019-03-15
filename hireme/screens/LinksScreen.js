@@ -126,8 +126,8 @@ export default class LinksScreen extends React.Component {
       snap.forEach((childSnapshot) => {
         if (childSnapshot.val().services) {
           childSnapshot.val().services.map((item, i) => {
-
-            if (item.service.includes(searchtext)) {
+            console.log('searchtext', searchtext);
+            if (item.service.indexOf(searchtext) !== -1) {
               console.log(item.service);
             }
             
