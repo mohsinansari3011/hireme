@@ -123,7 +123,13 @@ export default class LinksScreen extends React.Component {
     firedb.ref('users').once('value', snap => {
         
       snap.forEach((childSnapshot) => {
-          console.log(childSnapshot.val().services);
+        if (services) {
+          childSnapshot.val().services.map((item, i) => {
+            console.log(item.service);
+          })
+        }
+       
+          
         })
 
 
