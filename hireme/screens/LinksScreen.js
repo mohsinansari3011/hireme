@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import { firebase, firedb } from '../config/firebase';
-import console = require('console');
+
 
 
 
@@ -118,10 +118,11 @@ _usersearch(){
   firedb.ref('users').where("services", "array-contains", "carpenter")
     .once('value', snap => {
 
-      
-      this.setState({
-        user,
-        snap
+      snap.forEach((childSnapshot) => {
+
+        console.log(childSnapshot.val());
+
+
       })
     })
 }
