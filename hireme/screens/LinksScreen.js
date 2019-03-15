@@ -116,6 +116,7 @@ export default class LinksScreen extends React.Component {
 
   _usersearch(searchtext){
 
+
     this.setState({
       searchtext
     })
@@ -123,9 +124,27 @@ export default class LinksScreen extends React.Component {
     firedb.ref('users').once('value', snap => {
         
       snap.forEach((childSnapshot) => {
-        if (services) {
+        if (childSnapshot.val().services) {
           childSnapshot.val().services.map((item, i) => {
-            console.log(item.service);
+
+            if (item.service.includes(searchtext)) {
+              console.log(item.service);
+            }
+            
+
+            // if (childSnapshot.val().email !== user.email) {
+            //   if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
+            //     //userarr.push(childSnapshot.val());
+            //   } else {
+            //     if (!childSnapshot.val().role) {
+            //       userarr.push(childSnapshot.val());
+            //     }
+
+            //   }
+            // }
+
+
+            
           })
         }
        
