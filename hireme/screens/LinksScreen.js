@@ -57,7 +57,8 @@ export default class LinksScreen extends React.Component {
 
   renderUsers() {
 
-    const { user, snap, userarr } = this.state;
+    const { user, snap } = this.state;
+    const userarr = [];
     snap.forEach((childSnapshot) => {
       if (childSnapshot.val().email !== user.email) {
         if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
@@ -118,15 +119,15 @@ export default class LinksScreen extends React.Component {
     this.setState({
       searchtext
     })
-  firedb.ref('users').orderByChild("services").equalTo("carpenter").once('value', snap => {
 
+    firedb.ref('users').once('value', snap => {
+        
       snap.forEach((childSnapshot) => {
-
-        console.log(childSnapshot.val());
+          console.log(childSnapshot.val().services);
+        })
 
 
       })
-    })
 }
 
 
@@ -143,7 +144,7 @@ export default class LinksScreen extends React.Component {
         <TextInput
           keyboardType='default'
           style={{ margin: 10, height: 40, borderColor: 'gray', borderWidth: 1 }}
-          onChangeText={this._usersearch}
+          onChangeText={(text) => this._usersearch(text)}
           value={searchtext}
         />
       </View>
