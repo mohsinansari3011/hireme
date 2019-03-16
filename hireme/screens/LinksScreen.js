@@ -35,14 +35,18 @@ export default class LinksScreen extends React.Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
 
-        firedb.ref('users')
-          .once('value', snap => {
+        // firedb.ref('users')
+        //   .once('value', snap => {
 
-            this.setState({
-              user,
-              snap
-            })
-          })
+        //     this.setState({
+        //       user,
+        //       snap
+        //     })
+        //   })
+
+        this.setState({
+          user
+        })
       }
     })
   }
@@ -57,22 +61,22 @@ export default class LinksScreen extends React.Component {
 
   renderUsers() {
 
-    const { user, snap } = this.state;
-    const userarr = [];
-    snap.forEach((childSnapshot) => {
-      if (childSnapshot.val().email !== user.email) {
-        if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
-          //userarr.push(childSnapshot.val());
-        } else {
-          if (!childSnapshot.val().role) {
-            userarr.push(childSnapshot.val());
-          }
+    const { user, userarr } = this.state;
+    // const userarr = [];
+    // snap.forEach((childSnapshot) => {
+    //   if (childSnapshot.val().email !== user.email) {
+    //     if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
+    //       //userarr.push(childSnapshot.val());
+    //     } else {
+    //       if (!childSnapshot.val().role) {
+    //         userarr.push(childSnapshot.val());
+    //       }
 
-        }
-      }
+    //     }
+    //   }
 
 
-    })
+    // })
 
 
 
