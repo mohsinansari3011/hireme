@@ -102,6 +102,16 @@ export default class LinksScreen extends React.Component {
               <View>
                 <Text style={styles.titleText}> {item.phone} </Text>
               </View>
+
+                { item.services ? item.services.map((itemx,i) => {
+
+                  return(<View>
+                    <Text style={styles.titleText}> {itemx.service} </Text>
+                  </View>)
+                }) : <View></View>
+              
+              }
+
               {/* <View>
                 <TouchableOpacity><Button
                   title="View Profile"
@@ -136,7 +146,7 @@ export default class LinksScreen extends React.Component {
             
             if (item.service.indexOf(searchtext) !== -1) {
               //console.log('searchtext', searchtext);
-              console.log(childSnapshot.val().email,"----",item.service);
+              //console.log(childSnapshot.val().email,"----",item.service);
               //return;
 
 
@@ -146,7 +156,7 @@ export default class LinksScreen extends React.Component {
                 } else {
                   if (!childSnapshot.val().role) {
                     userarr.push(childSnapshot.val());
-                    console.log(childSnapshot.val());
+                    //console.log(childSnapshot.val());
                   }
 
                 }
