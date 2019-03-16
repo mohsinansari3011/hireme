@@ -121,6 +121,7 @@ export default class LinksScreen extends React.Component {
       searchtext
     })
 
+    const userarr = [];
     firedb.ref('users').once('value', snap => {
         
       snap.forEach((childSnapshot) => {
@@ -129,21 +130,26 @@ export default class LinksScreen extends React.Component {
             
             if (item.service.indexOf(searchtext) !== -1) {
               //console.log('searchtext', searchtext);
-              console.log(childSnapshot.val().email,"----",item.service);
+              //console.log(childSnapshot.val().email,"----",item.service);
               //return;
+
+
+              if (childSnapshot.val().email !== user.email) {
+                if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
+                  //userarr.push(childSnapshot.val());
+                } else {
+                  if (!childSnapshot.val().role) {
+                    userarr.push(childSnapshot.val());
+                  }
+
+                }
+              }
+
+
             }
             
 
-            // if (childSnapshot.val().email !== user.email) {
-            //   if (childSnapshot.val().isblock || childSnapshot.val().isdelete) {
-            //     //userarr.push(childSnapshot.val());
-            //   } else {
-            //     if (!childSnapshot.val().role) {
-            //       userarr.push(childSnapshot.val());
-            //     }
-
-            //   }
-            // }
+            
 
 
             
@@ -153,7 +159,9 @@ export default class LinksScreen extends React.Component {
           
         })
 
-
+        this.setState({
+          userarr
+        })
       })
 }
 
