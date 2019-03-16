@@ -62,6 +62,7 @@ export default class LinksScreen extends React.Component {
   renderUsers() {
 
     const { user, userarr } = this.state;
+    console.log('userarr---',userarr);
     // const userarr = [];
     // snap.forEach((childSnapshot) => {
     //   if (childSnapshot.val().email !== user.email) {
@@ -125,7 +126,7 @@ export default class LinksScreen extends React.Component {
       searchtext
     })
 
-    const userarr = [];
+    let userarr = [];
     const { user } = this.state;
     firedb.ref('users').once('value', snap => {
         
@@ -197,7 +198,7 @@ export default class LinksScreen extends React.Component {
 
   render() {
     
-    const { snap } = this.state;
+    const { userarr } = this.state;
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -212,7 +213,7 @@ export default class LinksScreen extends React.Component {
 
           {this.renderSearchBar()}
 
-          {snap ? this.renderUsers() : <View><Text>Loading....</Text></View>}
+          {userarr ? this.renderUsers() : <View><Text>NotFound....</Text></View>}
         </ScrollView>
 
 
