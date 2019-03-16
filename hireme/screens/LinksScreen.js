@@ -122,6 +122,7 @@ export default class LinksScreen extends React.Component {
     })
 
     const userarr = [];
+    const { user } = this.state;
     firedb.ref('users').once('value', snap => {
         
       snap.forEach((childSnapshot) => {
