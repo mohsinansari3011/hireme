@@ -146,6 +146,7 @@ export default class LinksScreen extends React.Component {
                 } else {
                   if (!childSnapshot.val().role) {
                     userarr.push(childSnapshot.val());
+                    console.log(childSnapshot.val());
                   }
 
                 }
