@@ -129,6 +129,7 @@ export default class LinksScreen extends React.Component {
             
             if (item.service.indexOf(searchtext) !== -1) {
               //console.log('searchtext', searchtext);
+              console.clear();
               console.log(childSnapshot.val().email,"----",item.service);
               //return;
             }
