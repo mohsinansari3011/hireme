@@ -276,7 +276,7 @@ export default class SettingsScreen extends React.Component {
             keyboardType='number-pad'
             maxLength={11}
             style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-            onChangeText={}
+            onChangeText={(text) => this.setState({ phone: text })}
             value={phone}
           />
 
