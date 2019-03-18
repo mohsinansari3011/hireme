@@ -239,7 +239,7 @@ export default class SettingsScreen extends React.Component {
               value={val.checked}
               onValueChange={() => this.checkBoxChanged(i, val.checked)}
             />
-            <Text style={}> {val.service} </Text>
+            <Text style={{ marginTop: 2 }}> {val.service} </Text>
           </View >
 
         )
