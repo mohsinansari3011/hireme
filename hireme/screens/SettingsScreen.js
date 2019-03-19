@@ -226,7 +226,7 @@ export default class SettingsScreen extends React.Component {
   }
   renderCheckBoxs() {
 
-    const { services } = this.state;
+    
     //console.log(services[0].service);
     return (
 
