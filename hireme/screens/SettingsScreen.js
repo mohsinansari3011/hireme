@@ -216,7 +216,7 @@ export default class SettingsScreen extends React.Component {
   checkBoxChanged(id, value) {
     
     const { services } = this.state;
-    services[id].checked = !value;
+   
 
     this.setState({
       services
