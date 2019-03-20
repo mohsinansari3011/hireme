@@ -261,7 +261,7 @@ export default class SettingsScreen extends React.Component {
       { label: 'User', value: 1 }
     ];
 
-    //alert(number);
+    alert(number);
     return (
       profile ?
         <View>
