@@ -266,8 +266,8 @@ export default class SettingsScreen extends React.Component {
       profile ?
         <View></View>
           
-          <Image source={{ uri: image }}
-            style={{ width: 400, height: 400 }} />
+          // <Image source={{ uri: image }}
+          //   style={{ width: 400, height: 400 }} />
 
           <Text>Hello   {profile.name} </Text>
           <Text>Email : {profile.email}</Text>
