@@ -298,14 +298,14 @@ export default class SettingsScreen extends React.Component {
 
   async _LogoutHireMe() {
 
-    // try {
-    //   await firebase.auth().signOut();
-    //   alert('You have Logout Successfully');
-    //   //this.props.navigation.navigate("HomeStack");
-    //   // signed out
-    // } catch (e) {
-    //   // an error
-    // }
+    try {
+      await firebase.auth().signOut();
+      alert('You have Logout Successfully');
+      //this.props.navigation.navigate("HomeStack");
+      // signed out
+    } catch (e) {
+      // an error
+    }
 
 
   }
