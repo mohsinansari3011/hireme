@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   headrow: {
-    // display:"flex",
+     display:"flex",
     borderBottomColor: '#bbb',
     borderBottomWidth: StyleSheet.hairlineWidth,
     backgroundColor: '#093d53',
