@@ -356,7 +356,7 @@ export default class SettingsScreen extends React.Component {
 
   render() {
     const { user } = this.state;
-    //console.log('render user ', user);
+    console.log('render user ', user);
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
