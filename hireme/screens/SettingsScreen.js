@@ -264,7 +264,7 @@ export default class SettingsScreen extends React.Component {
     //alert(number);
     return (
       profile ?
-        <View></View>
+        <View>
           
           <Image source={{ uri: image }}
             style={{ width: 400, height: 400 }} />
