@@ -315,7 +315,7 @@ export default class SettingsScreen extends React.Component {
 
 
   renderButton = () => {
-    const { user } = this.state;
+    //const { user } = this.state;
     //alert(this.state.user); 
     return (
       <View style={styles.container}>
