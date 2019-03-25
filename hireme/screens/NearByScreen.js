@@ -169,13 +169,13 @@ return(
                 <View>
                   <Text style={styles.titleText}> {km} KM Away! </Text>
                 </View>
-                {/* <View>
+                <View>
               <TouchableOpacity><Button
                 title="View Profile"
                 onPress={this.viewprofile}
                 color='#4881B2'
               /></TouchableOpacity>
-            </View> */}
+            </View>
               </View>
             </View>
           </TouchableOpacity>
