@@ -320,7 +320,7 @@ export default class SettingsScreen extends React.Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity><Button
-          title="Pick an image from camera roll"
+          // title="Pick an image from camera roll"
           onPress={this._pickImage}
           color='#093d53'
           style={{ marginTop:10}}
