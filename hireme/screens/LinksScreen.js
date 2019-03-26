@@ -224,7 +224,7 @@ export default class LinksScreen extends React.Component {
 
           {this.renderSearchBar()}
 
-          {userarr ? this.renderUsers() : <View><Text>NotFound..</Text></View>}
+          {userarr ? this.renderUsers() : <View><Text>NotFound.....</Text></View>}
         </ScrollView>
 
 
