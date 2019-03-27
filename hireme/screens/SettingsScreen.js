@@ -341,7 +341,7 @@ export default class SettingsScreen extends React.Component {
           onPress={this._LogoutHireMe}
           title="Logout"
           color='#093d53'
-          // accessibilityLabel="Logout From Facebook"
+          accessibilityLabel="Logout From Facebook"
         /></TouchableOpacity>
 
 
