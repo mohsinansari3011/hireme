@@ -132,7 +132,7 @@ export default class LoginScreen extends React.Component {
                 // type === 'cancel'
             }
         } catch ({ message }) {
-            //alert(`Facebook Login Error: ${message}`);
+            alert(`Facebook Login Error: ${message}`);
         }
     }
 
