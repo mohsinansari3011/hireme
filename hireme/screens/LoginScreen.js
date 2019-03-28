@@ -246,10 +246,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     tabBarInfoContainer: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
+        // position: 'absolute',
+        // bottom: 0,
+        // left: 0,
+        // right: 0,
         ...Platform.select({
             ios: {
                 shadowColor: 'black',
