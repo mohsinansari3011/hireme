@@ -138,10 +138,10 @@ deg2rad(deg) {
         
       })
 
-    //console.log(location.coords);
-    //console.log(user);
-    //console.log('user lat-- ', user.location.cord.latitude);
-    //console.log('user long-- ', user.location.cord.longitude);
+    console.log(location.coords);
+    console.log(user);
+    console.log('user lat-- ', user.location.cord.latitude);
+    console.log('user long-- ', user.location.cord.longitude);
 
 
 
