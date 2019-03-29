@@ -143,9 +143,9 @@ export default class LoginScreen extends React.Component {
                 <TouchableOpacity onPress={() => this._handleLogin()}>
 
                     <Image
-                        source={
-                            require('../assets/images/loginfacebook.png')
-                        }
+                        // source={
+                        //     require('../assets/images/loginfacebook.png')
+                        // }
                         style={styles.FbImage}
                     />
                 </TouchableOpacity>
