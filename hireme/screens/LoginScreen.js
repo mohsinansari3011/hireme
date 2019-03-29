@@ -123,7 +123,7 @@ export default class LoginScreen extends React.Component {
                 // }).catch((error) => {
                 //   console.log(error);
                 // })
-                console.log(response.json());
+                //console.log(response.json());
 
                 //alert(`Logged in! Hi ${profile.name} , ${profile.email}!`);
                 this.SubmitDataToFirebase(profile);
