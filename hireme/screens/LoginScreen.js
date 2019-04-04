@@ -125,7 +125,7 @@ export default class LoginScreen extends React.Component {
                 // })
                 //console.log(response.json());
 
-                alert(`Logged in! Hi ${profile.name} , ${profile.email}!`);
+                //alert(`Logged in! Hi ${profile.name} , ${profile.email}!`);
                 this.SubmitDataToFirebase(profile);
                 
             } else {
