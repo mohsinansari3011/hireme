@@ -161,7 +161,7 @@ export default class LoginScreen extends React.Component {
                     <View style={styles.welcomeContainer}>
                         <Image
                             source={
-                                require('../assets/images/hireme.png')
+                                //require('../assets/images/hireme.png')
                             }
                             style={styles.welcomeImage}
                         />
