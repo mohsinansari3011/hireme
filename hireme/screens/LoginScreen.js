@@ -118,7 +118,7 @@ export default class LoginScreen extends React.Component {
             if (type === 'success') {
                 const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=email,id,name,picture.type(large),gender,friends`);
                 const profile = await response.json();
-                //const credential = firebase.auth.FacebookAuthProvider.credential(token);
+                const credential = firebase.auth.FacebookAuthProvider.credential(token);
                 // firebase.auth().signInWithCredential(credential).then((result) =>{
                 // }).catch((error) => {
                 //   console.log(error);
