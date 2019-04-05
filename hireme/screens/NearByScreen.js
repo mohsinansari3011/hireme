@@ -41,7 +41,7 @@ export default class NearByScreen extends React.Component {
       .once('value', snap => {
 
         this.setState({
-          snap
+         // snap
         })
       })
 
