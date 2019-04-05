@@ -154,7 +154,7 @@ export default class LoginScreen extends React.Component {
     }
 
     render() {
-        console.disableYellowBox = true;
+        //console.disableYellowBox = true;
         return (
             <View style={styles.container}>
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
