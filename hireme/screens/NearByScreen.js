@@ -147,7 +147,7 @@ deg2rad(deg) {
 
 return(
     userarr ? userarr.map((item,i) =>{
-      //console.log('item --- ',item.email);
+      console.log('item --- ',item.email);
 
       let km = Math.ceil(this.getDistanceFromLatLonInKm(location.coords.latitude, location.coords.longitude, item.location.cord.latitude, item.location.cord.longitude));
       if (km<10) {
