@@ -30,7 +30,7 @@ export default class NearByScreen extends React.Component {
     userarr : [],
     location: null,
     refreshing: false,
-    locate : null
+    //locate : null
   };
 
 
