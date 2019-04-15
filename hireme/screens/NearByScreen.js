@@ -79,7 +79,7 @@ export default class NearByScreen extends React.Component {
   viewprofile() {
 
     Alert.alert('view Profile');
-    //this.props.navigation.navigate('Login');
+    this.props.navigation.navigate('Login');
   }
 
 
