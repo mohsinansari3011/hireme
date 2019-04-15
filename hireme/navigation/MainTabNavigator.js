@@ -57,7 +57,7 @@ SettingsStack.navigationOptions = {
 
 
 const NearByStack = createStackNavigator({
-  NearBy: NearByScreen,
+ // NearBy: NearByScreen,
 });
 
 NearByStack.navigationOptions = {
